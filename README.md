@@ -1,4 +1,4 @@
-# Monorepo Project
+# iSpan Project 2
 
 這是一個使用 Maven 多模組結構的專案，包含前端和後端兩個模組。
 
