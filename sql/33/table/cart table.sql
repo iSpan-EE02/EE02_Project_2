@@ -1,20 +1,24 @@
 CREATE table cart(
 	order_id int identity(1,1) primary key not null,
 	order_status varchar,
-	order_date datetime,
-	order_count int,
-	order_price int,
-	prod_id int,
-	prod_name varchar(20),
-	prod_price DECIMAL(10,2),
-	prod_img_url varchar(2083),
+	order_date datetime not null,
 	mem_id int,
-	mem_name varchar(20),
-	mem_pn varchar(20),
-	mem_adr varchar(50),
-	mem_mail varchar(50)
+	total_price DECIMAL(10,2),
 	);
 
 	select * from cart;
-
 	TRUNCATE TABLE cart;
+
+
+CREATE table order_detial(
+	detail_id int identity(1,1) primary key not null,
+	order_id int,
+	prod_id int,
+	prod_name varchar,
+	prod_price DECIMAL(10,2),
+	quantity int,
+	subtotal_price DECIMAL(10,2),
+	);
+
+	select * from order_detial;
+	TRUNCATE TABLE order_detial;
