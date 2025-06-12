@@ -19,5 +19,4 @@ CREATE TABLE Logistics (
     CONSTRAINT FK_Logistics_MEM FOREIGN KEY (mem_id) REFERENCES MEM(MEMid),
     CONSTRAINT FK_Logistics_PRODUCT FOREIGN KEY (prod_id) REFERENCES PRODUCT(PROD_ID),
 );
-
 	select * from Logistics;
