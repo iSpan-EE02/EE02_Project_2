@@ -1,7 +1,7 @@
 CREATE TABLE Logistics_Tracking (
     trak_id INT IDENTITY(1,1) PRIMARY KEY,
     log_id INT NOT NULL,
-    location_name NVARCHAR(20) NOT NULL,   
+    location_name NVARCHAR(50) NOT NULL,   
     status NVARCHAR(10) NOT NULL,    
     timestamp DATETIME NOT NULL DEFAULT GETDATE(), 
     sequence INT NOT NULL,  
