@@ -7,8 +7,8 @@ CREATE TABLE PurchaseOrders (
     Creator_ID INT NOT NULL, -- 建立此採購單員工
     Create_date DATETIME DEFAULT GETDATE(),
     Update_date DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (Supplier_ID) REFERENCES Suppliers(Supplier_ID)
-	FOREIGN KEY (Creator_ID) REFERENCES EMPID(EMP)
+    FOREIGN KEY (Supplier_ID) REFERENCES Suppliers(Supplier_ID),
+	FOREIGN KEY (Creator_ID) REFERENCES EMP(EMPID)
 );
 --採購明細
 CREATE TABLE Purchaseorder_details (
@@ -17,9 +17,8 @@ CREATE TABLE Purchaseorder_details (
     sku_id INT NOT NULL,
     Quantity INT NOT NULL,
 	Unit_price DECIMAL(10,2) NOT NULL,
-	Total_price DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (Purchaseorder_ID) REFERENCES Purchaseorders(Purchaseorder_ID),
-    FOREIGN KEY (sku_id) REFERENCES product_sku(sku_id)
+	FOREIGN KEY (Purchaseorder_ID) REFERENCES Purchaseorders(Purchaseorder_ID),
+    FOREIGN KEY (sku_id) REFERENCES product_skus(sku_id)
 );
 --供應商
 CREATE TABLE Suppliers (
@@ -28,7 +27,6 @@ CREATE TABLE Suppliers (
     Contact_Person NVARCHAR(20),
     Contact_Email NVARCHAR(100),
     Contact_Phone NVARCHAR(20),
-    Notes NVARCHAR(100),
     Create_date DATETIME DEFAULT GETDATE(),
     Update_date DATETIME DEFAULT GETDATE()
 );
@@ -37,8 +35,8 @@ CREATE TABLE Supplierproducts (
     Supplierproduct_ID INT PRIMARY KEY IDENTITY(1,1),
     Supplier_ID INT NOT NULL,
     sku_id INT NOT NULL,
-    Notes NVARCHAR(100),         
+    Unit_price DECIMAL(10,2) NOT NULL,     
     FOREIGN KEY (Supplier_ID) REFERENCES Suppliers(Supplier_ID),
-    FOREIGN KEY (sku_id) REFERENCES product_sku(sku_id)
+    FOREIGN KEY (sku_id) REFERENCES product_skus(sku_id)
 );
---出入庫
+
