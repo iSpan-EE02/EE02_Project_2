@@ -44,6 +44,7 @@ public class DaoQueryAll extends HttpServlet {
 			e.printStackTrace();
 		}
 		request.setAttribute("emps", empList);
+//		System.out.println(empList);
 		request.getRequestDispatcher("/Page").forward(request, response);
 	}
 
