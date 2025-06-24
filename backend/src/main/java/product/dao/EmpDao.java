@@ -127,6 +127,7 @@ public class EmpDao {
 			empList.add(emp);
 		}
 		JDBCutil.closeResource(stmt, rs);
+		System.out.println(emp.getDeptno());
 		return empList;
 	}
 	
