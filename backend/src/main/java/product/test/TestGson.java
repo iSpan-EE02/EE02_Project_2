@@ -2,7 +2,7 @@ package product.test;
 
 import com.google.gson.Gson;
 
-import product.bean.EmpBean;
+import product.bean.ProdCateBean;
 
 public class TestGson {
 	public static void main(String[] args) {
@@ -10,7 +10,7 @@ public class TestGson {
         Gson gson = new Gson();
         
         // 物件 → JSON 序列化
-        EmpBean empBean = new EmpBean();
+        ProdCateBean empBean = new ProdCateBean();
         empBean.setDeptno("1001");
         empBean.setDname("admin");
         String json = gson.toJson(empBean);
@@ -18,7 +18,7 @@ public class TestGson {
         // 輸出：{"name":"John","age":30}
         
         // JSON → 物件反序列化
-        EmpBean parsedUser = gson.fromJson(json, EmpBean.class);
+        ProdCateBean parsedUser = gson.fromJson(json, ProdCateBean.class);
         System.out.println("反序列化的物件: " + parsedUser);
 	}
 }

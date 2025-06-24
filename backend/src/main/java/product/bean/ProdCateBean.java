@@ -1,28 +1,23 @@
 package product.bean;
 
-public class EmpBean implements java.io.Serializable {
+public class ProdCateBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	private String empno;
-	private String ename;
-	private String hiredate;
-	private String salary;
-	private String deptno;
-	private String title;
-	private String dname;
+	private String cate_id;
+	private String cate_name;
+	private String parent_cate_id;
+	private String cate_desc;
+	
+//	getter
+	public String getCate_id() { return cate_id; }
+	public String getCate_name() { return cate_name;}
+	public String getParent_cate_id() { return parent_cate_id;}
+	public String getCate_desc() { return cate_desc;}
 
-	public String getEmpno() {  return empno;  }
-	public String getEname() {  return ename;  }
-	public String getHiredate() {  return hiredate;  }
-	public String getSalary() {  return salary;  }
-	public String getDeptno() {  return deptno;  }
-	public String getTitle() {  return title;  }
-	public String getDname() {  return dname;  }
+	
+//	setter
+	public void setCate_id(String cate_id) { this.cate_id = cate_id; }
+	public void setCate_name(String cate_name) { this.cate_name = cate_name; }
+	public void setParent_cate_id(String parent_cate_id) { this.parent_cate_id = parent_cate_id; }
+	public void setCate_desc(String cate_desc) { this.cate_desc = cate_desc; }
 
-	public void setEmpno(String empno) {  this.empno = empno;  }
-	public void setEname(String ename) {  this.ename = ename;  }
-	public void setHiredate(String hiredate) {  this.hiredate= hiredate;  }
-	public void setSalary(String salary) {  this.salary = salary;  }
-	public void setDeptno(String deptno) {  this.deptno= deptno;	}
-	public void setTitle(String title) {  this.title= title;	}
-	public void setDname(String dname) {  this.dname= dname;	}
 }
