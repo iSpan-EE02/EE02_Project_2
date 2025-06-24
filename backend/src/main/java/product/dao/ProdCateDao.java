@@ -18,10 +18,10 @@ import javax.sql.DataSource;
  * @since 2025-06-17
  */
 
-import product.bean.EmpBean;
+import product.bean.ProdCateBean;
 import product.util.JDBCutil;
 
-public class EmpDao {
+public class ProdCateDao {
 //	private static final String sqlInsert = "INSERT INTO employee(empno,ename,"
 //			+ "hiredate,salary,deptno,title) VALUES(" + "?,?,?,?,?,?)";
 //
@@ -30,7 +30,7 @@ public class EmpDao {
 //	private static final String sqlUpdate = "UPDATE employee " + "SET ename = ?," + "hiredate = ?," + "salary = ?,"
 //			+ "deptno = ?," + "title = ?" + "WHERE empno = ?";
 
-	private static final String sqlQueryAll = "select e.empno,e.ename,e.hiredate,e.salary,e.deptno,e.title,d.dname from employee e Join department d on e.deptno = d.deptno;";
+	private static final String sqlQueryAll = "select cate_id, cate_name, parent_cate_id, cate_desc from product_category";
 //
 //	private static final String sqlQueryOne = "select * from employee where empno = ?";
 //	
@@ -108,27 +108,24 @@ public class EmpDao {
 	 * This is a query All DAO method of EmpBean
 	 * 
 	 */
-	public List<EmpBean> queryAllEmp() throws SQLException {
-		List<EmpBean> empList = new ArrayList<EmpBean>();
+	public List<ProdCateBean> queryAllEmp() throws SQLException {
+		List<ProdCateBean> prodCateList = new ArrayList<ProdCateBean>();
 		// empList.add
 		Connection conn = JDBCutil.getConnection();
 		PreparedStatement stmt = conn.prepareStatement(sqlQueryAll);
 		ResultSet rs = stmt.executeQuery();
-		EmpBean emp = null;
+		ProdCateBean prodCate = null;
 		while (rs.next()) {
-			emp = new EmpBean();
-			emp.setEmpno(rs.getString("empno"));
-			emp.setEname(rs.getString("ename"));
-			emp.setHiredate(rs.getString("hiredate"));
-			emp.setSalary(rs.getString("salary"));
-			emp.setDeptno(rs.getString("deptno"));
-			emp.setTitle(rs.getString("title"));
-			emp.setDname(rs.getString("dname"));
-			empList.add(emp);
+			prodCate = new ProdCateBean();
+			prodCate.setCate_id(rs.getString("cate_id"));
+			prodCate.setCate_name(rs.getString("cate_name"));
+			prodCate.setParent_cate_id(rs.getString("parent_cate_id"));
+			prodCate.setCate_desc(rs.getString("cate_desc"));
+			prodCateList.add(prodCate);
 		}
 		JDBCutil.closeResource(stmt, rs);
-		System.out.println(emp.getDeptno());
-		return empList;
+		System.out.println(prodCate.getCate_id());
+		return prodCateList;
 	}
 	
 //	/*
