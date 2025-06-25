@@ -13,7 +13,8 @@ import java.util.List;
 
 import product.bean.ProdCateBean;
 
-import product.dao.ProdCateDao;
+import product.dao.ProdCateDaoOld;
+
 
 /**
  * Servlet implementation class DaoQueryAll
@@ -36,7 +37,8 @@ public class DaoQueryAll extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		List<ProdCateBean> empList = null;
-		ProdCateDao empDao = new ProdCateDao();
+		
+		ProdCateDaoOld empDao = new ProdCateDaoOld();
 		try {
 			empList = empDao.queryAllEmp();
 		} catch (SQLException e) {
