@@ -1,0 +1,74 @@
+<!-- 商品列表頁面 (預設顯示) -->
+<div id="product-list" class="product-page" style="display: block;">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">商品管理</h1>
+        <button class="btn btn-success" onclick="showSubPage('product-add')"><i class="bi bi-plus-circle"></i>
+            新增商品</button>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <h6>按分類篩選</h6>
+            <div class="category-tree">
+                <!-- 分類樹結構 -->
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="input-group mb-3">
+                <select class="form-select" style="max-width: 150px;">
+                    <option selected>狀態: 全部</option>
+                    <option value="1">● 上架中</option>
+                    <option value="2">○ 已下架</option>
+                </select>
+                <input type="text" class="form-control" placeholder="搜尋商品名稱或SKU...">
+                <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th>圖片</th>
+                            <th>商品名稱</th>
+                            <th>狀態</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
+                                    width="40"></td>
+                            <td>經典純棉素色T恤</td>
+                            <td><span class="badge bg-success">上架中</span></td>
+                            <td>
+                                <a href="#" onclick="showSubPage('product-edit')"
+                                    class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 商品新增/編輯頁面 (預設隱藏) -->
+<div id="product-edit" class="product-page" style="display: none;">
+    <h1 class="h2">編輯商品：經典純棉素色T恤</h1>
+    <hr>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5><i class="bi bi-info-circle-fill"></i> 商品基本資料</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">商品名稱</label>
+                <input type="text" class="form-control" value="經典純棉素色T恤">
+            </div>
+            <!-- ... 其他表單欄位 ... -->
+        </div>
+    </div>
+    <div class="mt-4 text-end">
+        <button class="btn btn-secondary" onclick="showSubPage('product-list')">返回列表</button>
+        <button class="btn btn-primary btn-lg">儲存所有變更</button>
+    </div>
+</div>

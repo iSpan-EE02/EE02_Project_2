@@ -1,0 +1,42 @@
+<!-- 商品分類管理頁面 -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">商品分類管理</h1>
+    <button class="btn btn-primary"><i class="bi bi-plus-circle"></i> 新增分類</button>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">分類結構 (可拖曳排序)</div>
+            <div class="card-body category-tree">
+                <ul>
+                    <li><a href="#"><i class="bi bi-caret-down-fill"></i><b>服裝 (ID: 1)</b></a>
+                        <ul>
+                            <li><a href="#"><i class="bi bi-caret-down-fill"></i>男裝 (ID: 2)</a></li>
+                            <li><a href="#"><i class="bi bi-caret-down-fill"></i>女裝 (ID: 3)</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header">編輯分類：<b>男裝</b></div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="cate-name" class="form-label">分類名稱</label>
+                        <input type="text" class="form-control" id="cate-name" value="男裝">
+                    </div>
+                    <div class="mb-3">
+                        <label for="parent-cate" class="form-label">父分類</label>
+                        <select class="form-select" id="parent-cate">
+                            <option value="1" selected>服裝</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">儲存變更</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

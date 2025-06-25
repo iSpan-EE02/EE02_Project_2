@@ -1,14 +1,14 @@
 package product.dao;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
+
+
+import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 /**This class is a collection of DAO method to access EmpBean
  * 
@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 import product.bean.ProdCateBean;
 import product.util.JDBCutil;
 
-public class ProdCateDaoOld {
+public class ProdCateDao {
 //	private static final String sqlInsert = "INSERT INTO employee(empno,ename,"
 //			+ "hiredate,salary,deptno,title) VALUES(" + "?,?,?,?,?,?)";
 //
@@ -105,26 +105,20 @@ public class ProdCateDaoOld {
 //	}
 
 	/*
-	 * This is a query All DAO method of EmpBean
+	 * This is a query All DAO method of ProdCateBean
 	 * 
 	 */
-	public List<ProdCateBean> queryAllEmp() throws SQLException {
-		List<ProdCateBean> prodCateList = new ArrayList<ProdCateBean>();
-		// empList.add
-		Connection conn = JDBCutil.getConnection();
-		PreparedStatement stmt = conn.prepareStatement(sqlQueryAll);
-		ResultSet rs = stmt.executeQuery();
-		ProdCateBean prodCate = null;
-		while (rs.next()) {
-			prodCate = new ProdCateBean();
-			prodCate.setCate_id(rs.getString("cate_id"));
-			prodCate.setCate_name(rs.getString("cate_name"));
-			prodCate.setParent_cate_id(rs.getString("parent_cate_id"));
-			prodCate.setCate_desc(rs.getString("cate_desc"));
-			prodCateList.add(prodCate);
+	public List<ProdCateBean> queryAll() throws SQLException {
+		QueryRunner queryRunner = new QueryRunner();
+		BeanListHandler<ProdCateBean> beanListHandler = new BeanListHandler<>(ProdCateBean.class);
+		Connection conn = null;
+		try {
+			conn = JDBCutil.getConnection();
+			return queryRunner.query(conn, sqlQueryAll, beanListHandler);
+		}finally {
+			DbUtils.closeQuietly(conn);
 		}
-		System.out.println(prodCate.getCate_id());
-		return prodCateList;
+
 	}
 	
 //	/*
