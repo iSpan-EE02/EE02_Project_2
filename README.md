@@ -1,16 +1,18 @@
 # iSpan Project 2
 
-這是一個使用 Maven 多模組結構的專案，包含前端和後端兩個模組。
+這是一個電商專案，
+使用Eclipse建立的Dynamic Web Project，
+採用MVC架構：
+Model：（JavaBean Class）
+View：（html和JSP）
+Controller：（Servlet）
+資料庫：MS SQL Server
 
 ## 專案結構
 
 ```
-monorepo/
-├── frontend/           # 前端模組
-│   ├── public/        # 靜態文件
-│   ├── src/          # 源代碼
-│   └── tests/        # 測試代碼
-│
+Project2/
+├── sql/           # 建立資料庫和插入資料的.sql檔案.
 └── backend/           # 後端模組
     └── src/
         ├── main/     # 主源代碼
@@ -20,42 +22,13 @@ monorepo/
 ## 開發環境要求
 
 - Java 17 或更高版本
-- Maven 3.6 或更高版本
-- Node.js 16.14.0 或更高版本
-- npm 8.3.1 或更高版本
+- apache-tomcat-10.1.41
+- MS SQLEXPRESS
 
 ## 構建和運行
+1. 下載tomcat
+2. 下載MS SQLEXPRESS 
+3. 在sql server中建立資料庫project2
+4. 在eclipse中新建server
+5. 在server中配置JNDI資料（context.xml,server.xml）
 
-### 構建整個專案
-
-```bash
-mvn clean install
-```
-
-### 運行前端開發服務器
-
-```bash
-cd frontend
-npm start
-```
-
-### 運行後端服務器
-
-```bash
-mvn tomcat7:run
-```
-
-## 測試
-
-### 前端測試
-
-```bash
-cd frontend
-npm test
-```
-
-### 後端測試
-
-```bash
-mvn test
-``` 
