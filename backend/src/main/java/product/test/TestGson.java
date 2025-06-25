@@ -10,10 +10,10 @@ public class TestGson {
         Gson gson = new Gson();
         
         // 物件 → JSON 序列化
-        ProdCateBean empBean = new ProdCateBean();
-        empBean.setDeptno("1001");
-        empBean.setDname("admin");
-        String json = gson.toJson(empBean);
+        ProdCateBean prodBean = new ProdCateBean();
+        prodBean.setCate_name("電腦");
+        prodBean.setCate_desc("電子計算機");
+        String json = gson.toJson(prodBean);
         System.out.println("轉換成 JSON: " + json); 
         // 輸出：{"name":"John","age":30}
         

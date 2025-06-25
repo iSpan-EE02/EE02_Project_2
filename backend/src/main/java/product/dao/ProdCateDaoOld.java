@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 import product.bean.ProdCateBean;
 import product.util.JDBCutil;
 
-public class ProdCateDao {
+public class ProdCateDaoOld {
 //	private static final String sqlInsert = "INSERT INTO employee(empno,ename,"
 //			+ "hiredate,salary,deptno,title) VALUES(" + "?,?,?,?,?,?)";
 //
@@ -123,7 +123,6 @@ public class ProdCateDao {
 			prodCate.setCate_desc(rs.getString("cate_desc"));
 			prodCateList.add(prodCate);
 		}
-		JDBCutil.closeResource(stmt, rs);
 		System.out.println(prodCate.getCate_id());
 		return prodCateList;
 	}
