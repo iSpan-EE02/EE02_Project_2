@@ -22,7 +22,7 @@ public class JDBCutil {
 		Connection connection = null;
 		try {
 			InitialContext context = new InitialContext();
-			DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/project2");
+			DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/team06db");
 			connection = ds.getConnection();
 			boolean status = !connection.isClosed();
 			System.out.println("連綫狀態："+status);

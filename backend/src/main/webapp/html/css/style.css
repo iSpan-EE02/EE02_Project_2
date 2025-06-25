@@ -1,0 +1,72 @@
+/* =================================
+   基本與佈局
+   ================================= */
+body {
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    background-color: #343a40;
+    padding-top: 1rem;
+}
+
+.main-content {
+    display: none;
+    /* 預設隱藏所有主內容區塊 */
+}
+
+.main-content.active {
+    display: block;
+    /* 只顯示被標記為 active 的區塊 */
+}
+
+
+/* =================================
+   側邊導覽列 (Sidebar)
+   ================================= */
+.sidebar .nav-link {
+    color: #adb5bd;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+    color: #ffffff;
+    background-color: #495057;
+}
+
+
+/* =================================
+   分類樹 (Category Tree)
+   ================================= */
+.category-tree ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.category-tree li {
+    padding: 5px 0;
+}
+
+.category-tree li a {
+    text-decoration: none;
+    color: #212529;
+}
+
+.category-tree li a:hover {
+    text-decoration: underline;
+}
+
+.category-tree .bi {
+    font-size: 0.8rem;
+    margin-right: 5px;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* 可以在此添加點擊後旋轉圖示的 JS 互動 */
+.category-tree .bi-caret-down-fill.collapsed {
+    transform: rotate(-90deg);
+}
