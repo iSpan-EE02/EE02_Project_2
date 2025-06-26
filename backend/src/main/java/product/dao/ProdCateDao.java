@@ -72,6 +72,11 @@ public class ProdCateDao {
 		QueryRunner queryRunner = new QueryRunner();
 		
 		try {
+			
+			if(cate.getParent_cate_id()==0) {
+				cate.setParent_cate_id(null);
+			}
+			
 			Object[] params = {
 					cate.getCate_name(),
 					cate.getParent_cate_id(),
