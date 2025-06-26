@@ -1,10 +1,16 @@
 package product.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ProdCateBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
+	@SerializedName(value = "cate_id", alternate = {"cate-id"})
 	private Integer cate_id;
+	@SerializedName(value = "cate_name", alternate = {"cate-name"})
 	private String cate_name;
+	@SerializedName(value = "parent_cate_id", alternate = {"cate-parent-id"})
 	private Integer parent_cate_id;
+	@SerializedName(value = "cate_desc", alternate = {"cate-desc"})
 	private String cate_desc;
 	private Boolean is_parent;
 	

@@ -5,8 +5,8 @@
  */
 
 // 您的 Servlet 相對路徑
-const PROD_CATE_UPSERT = '/Project2/ProdCateQueryAll';
-const PROD_CATE_DELETE = '/Project2/ProdCateQueryAll';
+const PROD_CATE_UPSERT = '/Project2/ProdCateSave';
+const PROD_CATE_DELETE = '/Project2/ProdCateDelete';
 const PROD_CATE_QUERY = '/Project2/ProdCateQueryAll';
 
 
@@ -42,6 +42,77 @@ export async function fetchCategories() {
         // 捕獲網路連線錯誤 (如無法連線到伺服器) 或上面拋出的所有錯誤
         console.error('取得分類資料時發生錯誤:', error);
         // 將錯誤再次拋出，這樣呼叫此函式的程式碼 (categories.js) 才能捕獲到它並在介面上顯示錯誤訊息
+        throw error;
+    }
+}
+
+/**
+ * 新增或修改一個分類資料
+ * @param {object} categoryData - 要儲存的分類物件，例如 { cate_id: '1', cate_name: '新名稱', ... }
+ * @returns {Promise<object>} 回傳一個包含後端回應的 Promise
+ */
+export async function saveCategory(categoryData) {
+    console.log(`正在將資料儲存至 ${PROD_CATE_UPSERT}...`, categoryData);
+
+    try {
+        const response = await fetch(PROD_CATE_UPSERT, {
+            method: 'POST', // 使用 POST 方法來傳送資料
+            headers: {
+                // 必須設定這個標頭，告訴後端我們傳送的是 JSON 格式的資料
+                'Content-Type': 'application/json',
+            },
+            // 將 JavaScript 物件轉換為 JSON 字串後，放在請求的主體 (body) 中
+            body: JSON.stringify(categoryData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`伺服器錯誤！狀態碼: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        // 檢查後端回傳的業務邏輯是否成功
+        if (result && result.status === 'success') {
+            console.log('資料儲存成功！');
+            return result; // 將後端的成功回應傳回
+        } else {
+            throw new Error(result.message || '儲存失敗，但伺服器未提供錯誤訊息');
+        }
+
+    } catch (error) {
+        console.error('儲存分類資料時發生錯誤:', error);
+        throw error;
+    }
+}
+
+/**
+ * 刪除一個分類
+ * @param {number | string} categoryId - 要刪除的分類 ID
+ * @returns {Promise<object>} 回傳一個包含後端回應的 Promise
+ */
+export async function deleteCategory(categoryId) {
+    console.log(`正在從 ${PROD_CATE_DELETE} 刪除 ID 為 ${categoryId} 的資料...`);
+
+    try {
+        const response = await fetch(`${PROD_CATE_DELETE}?cate_id=${categoryId}`, {
+            method: 'GET', // 使用 GET 方法
+        });
+
+        if (!response.ok) {
+            throw new Error(`伺服器錯誤！狀態碼: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result && result.status === 'success') {
+            console.log('資料刪除成功！');
+            return result;
+        } else {
+            throw new Error(result.message || '刪除失敗，但伺服器未提供錯誤訊息');
+        }
+
+    } catch (error) {
+        console.error('刪除分類資料時發生錯誤:', error);
         throw error;
     }
 }

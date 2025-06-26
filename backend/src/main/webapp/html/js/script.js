@@ -31,10 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 根據頁面路徑，載入對應的 JS 模組
             const scriptSrc = getScriptForPage(path);
-            console.log("test_getScript1");
 
             if (scriptSrc) {
-                console.log("test_getScript2");
+
                 // *** 使用動態 import() 來載入並執行模組 ***
                 // 加上一個 cache-busting 參數 (時間戳) 來提示瀏覽器這可能是一個新的請求，有助於解決快取問題
                 const module = await import(`${scriptSrc}?t=${new Date().getTime()}`);

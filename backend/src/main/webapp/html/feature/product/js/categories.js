@@ -2,7 +2,7 @@
  * @file categories.js
  * @description 商品分類頁面的主要邏輯 (ES6 模組)
  */
-import { fetchCategories } from './api-client.js';
+import { fetchCategories, saveCategory, deleteCategory } from './api-client.js';
 
 // 將扁平的分類陣列轉換為樹狀結構
 function buildCategoryTree(list) {
@@ -54,6 +54,10 @@ function populateEditForm(id, name, desc, parentId, isParent) {
     document.getElementById('edit-cate-name').value = name;
     document.getElementById('edit-cate-desc').value = desc;
     document.getElementById('edit-parent-cate').value = parentId || 0;
+    document.getElementById('edit-cate-id').disabled = false;
+    document.getElementById('delete-category-btn').setAttribute("x-show", "true");
+    //啓用按鈕
+    document.getElementById("save-category-btn").disabled = false;
 
     const deleteBtn = document.getElementById('delete-category-btn');
     // 注意：從 dataset 來的會是字串 "true" 或 "false"
@@ -70,8 +74,10 @@ function populateEditForm(id, name, desc, parentId, isParent) {
 function clearEditForm() {
     document.getElementById('edit-form-header').textContent = '新增分類';
     document.getElementById('category-edit-form').reset();
-    document.getElementById('edit-cate-id').value = '';
+    document.getElementById('edit-cate-id').disabled = true;
+    document.getElementById("save-category-btn").disabled = false;
     document.getElementById('delete-category-btn').disabled = true;
+    document.getElementById('delete-category-btn').setAttribute("x-show", "false");
 }
 
 
@@ -81,24 +87,63 @@ function clearEditForm() {
 */
 async function handleFormSubmit(event) {
     event.preventDefault();
+
+    //取得表單資料
     const form = event.target;
     const formData = new FormData(form);
-    console.log('第 2 步：FormData 物件的內容 (需要用特殊方法讀取):');
-
-    //什麼都沒讀出來
-    for (const [key, value] of formData.entries()) {
-        console.log(`  - ${key}: ${value}`);
-    }
     const categoryData = Object.fromEntries(formData.entries());
-    console.log("hello world");
 
-    console.log(categoryData);
+    try {
+        //禁用按鈕
+        document.getElementById("save-category-btn").disabled = true;
+        //呼叫存儲API
+        await saveCategory(categoryData);
+        //重新初始化頁面
+        init();
+        //清空表單
+        clearEditForm();
+
+        window.alert("儲存資料成功")
+
+    } catch (error) {
+        console.log("儲存失敗");
+        console.log("錯誤訊息" + error.message);
+        window.alert("儲存失敗" + error.message);
+    }
+
 
 
 }
 
 // 刪除按鈕事件
 async function handleDelete() {
+    const categoryId = document.getElementById('edit-cate-id').value;
+    if (!categoryId) {
+        alert('請先選擇一個要刪除的分類。');
+        return;
+    }
+
+    // 為了安全，給使用者一個確認的機會
+    if (!confirm(`您確定要刪除 ID 為 ${categoryId} 的分類嗎？`)) {
+        return;
+    }
+
+    try {
+        document.getElementById('delete-category-btn').disabled = true;
+        await deleteCategory(categoryId); // 假設 deleteCategory 在 api-client.js 中
+
+        // 【核心】刪除成功後，重新初始化頁面
+        await init();
+
+        // 操作成功後清空表單
+        clearEditForm();
+
+    } catch (error) {
+        console.error('刪除分類失敗:', error);
+        alert(`刪除失敗：${error.message}`); // 顯示從後端傳來的明確錯誤（例如：底下有商品無法刪除）
+    } finally {
+        document.getElementById('delete-category-btn').disabled = false;
+    }
 
 }
 
@@ -111,12 +156,19 @@ export default async function init() {
     try {
         // 取得分類資料
         const categories = await fetchCategories();
+        console.log(categories);
 
         // 使用資料建立樹狀結構
         const treeData = buildCategoryTree(categories);
 
+        console.log(treeData);
+
+
         // 生成樹狀結構的 HTML
         const treeHTML = generateTreeHTML(treeData);
+
+        // console.log(treeHTML);
+
 
         // 將生成的 HTML 插入到容器中
         const container = document.getElementById('category-tree-container');
