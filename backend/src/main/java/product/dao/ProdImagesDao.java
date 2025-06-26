@@ -21,7 +21,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import product.bean.ProdCateBean;
 import product.util.JDBCutil;
 
-public class ProdCateDao {
+public class ProdImagesDao {
 //	private static final String sqlInsert = "INSERT INTO employee(empno,ename,"
 //			+ "hiredate,salary,deptno,title) VALUES(" + "?,?,?,?,?,?)";
 //
