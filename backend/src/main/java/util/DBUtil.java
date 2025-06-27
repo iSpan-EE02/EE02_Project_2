@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBUtil {
-	    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName= team06db";
+	    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName= team06db;encrypt=true;trustServerCertificate=true";
 	    private static final String USER = "eric";
 	    private static final String PASSWORD = "123456";
 
