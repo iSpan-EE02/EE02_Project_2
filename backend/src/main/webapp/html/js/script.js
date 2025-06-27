@@ -72,3 +72,30 @@ document.addEventListener("DOMContentLoaded", () => {
     dashboardLink.classList.add("active");
   }
 });
+
+document.addEventListener("alpine:init", () => {
+  Alpine.data("pagination", () => ({
+    paginatedProducts: [],
+    currentPage: 1,
+    totalPages: 10, // 假設總共有10頁
+
+    // 你也可以在這裡定義方法
+    goToPage(page) {
+      this.currentPage = page;
+    },
+    previousPage() {
+      if (this.currentPage == 1) {
+        this.currentPage = this.totalPages;
+      } else {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage == this.totalPages) {
+        this.currentPage = 1;
+      } else {
+        this.currentPage++;
+      }
+    },
+  }));
+});

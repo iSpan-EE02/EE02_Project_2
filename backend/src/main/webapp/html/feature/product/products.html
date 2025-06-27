@@ -39,7 +39,8 @@
                     <input type="text" class="form-control" placeholder="搜尋商品名稱OR商品ID...">
                     <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive" x-data="pagination"
+                    x-on:update-total-pages.window="totalPages = $event.detail.newTotal">
 
                     <!-- 商品table -->
 
@@ -56,7 +57,7 @@
                             </thead>
 
 
-                            <tbody>
+                            <tbody x-for="product in paginatedProducts">
                                 <tr class="align-middle">
                                     <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
                                             width="40"></td>
@@ -137,30 +138,22 @@
                     <!-- 分頁控制 -->
                     <div class="d-flex align-items-center mb-3 w-50 mx-auto">
                         <!-- 上一頁按鈕 -->
-                        <button @click="previousPage()" :disabled="currentPage === 1 || isLoading"
-                            class="btn btn-outline-secondary" style="line-height: 16px;">
+                        <button @click="previousPage()" class="btn btn-outline-secondary" style="line-height: 16px;">
                             &lt;
                         </button>
 
                         <!-- 頁碼下拉選單 -->
-                        <select x-model.number="currentPage" :disabled="isLoading"
-                            class="form-select form-select-sm mx-auto w-50">
+                        <select x-model.number="currentPage" class="form-select form-select-sm mx-auto w-50">
                             <template x-for="page in totalPages" :key="page">
                                 <option :value="page" x-text="`第 ${page} 頁`"></option>
                             </template>
                         </select>
 
                         <!-- 下一頁按鈕 -->
-                        <button @click="nextPage()" :disabled="currentPage === totalPages || isLoading"
-                            class="btn btn-outline-secondary" style="line-height: 16px;">
+                        <button @click="nextPage()" class="btn btn-outline-secondary" style="line-height: 16px;">
                             &gt;
                         </button>
                     </div>
-
-
-
-
-
 
                 </div>
             </div>
