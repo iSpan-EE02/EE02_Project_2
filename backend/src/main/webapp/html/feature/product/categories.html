@@ -29,19 +29,19 @@
 
                     <div class="mb-3">
                         <label for="edit-cate-name" class="form-label">分類名稱</label>
-                        <input type="text" class="form-control" id="edit-cate-name" name="cate-name" required>
+                        <input type="text" class="form-control" id="edit-cate-name" name="cate-name" required disabled>
                     </div>
                     <div class="mb-3">
                         <label for="edit-parent-cate" class="form-label">父分類</label>
                         <!-- JS 將會動態填入父分類選項 -->
-                        <select class="form-select" id="edit-parent-cate" name="cate-parent-id">
+                        <select class="form-select" id="edit-parent-cate" name="cate-parent-id" disabled>
                             <option value="0">（此為頂層分類）</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="edit-cate-desc" class="form-label">分類描述</label>
                         <textarea class="form-control" id="edit-cate-desc" rows="3" name="cate-desc"
-                            required></textarea>
+                            required disabled></textarea>
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-outline-danger me-2" id="delete-category-btn" x-show="true"
