@@ -72,3 +72,49 @@ document.addEventListener("DOMContentLoaded", () => {
     dashboardLink.classList.add("active");
   }
 });
+
+//alpine.js相關
+document.addEventListener("alpine:init", () => {
+  Alpine.data("pagination", () => ({
+    paginatedProducts: [],
+    currentPage: 1,
+    totalPages: 10, // 假設總共有10頁
+
+    // 你也可以在這裡定義方法
+    goToPage(page) {
+      this.currentPage = page;
+    },
+    previousPage() {
+      if (this.currentPage == 1) {
+        this.currentPage = this.totalPages;
+      } else {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage == this.totalPages) {
+        this.currentPage = 1;
+      } else {
+        this.currentPage++;
+      }
+    },
+    // testMe() {
+    //   const mockData = [];
+    //   mockData.push({
+    //     prod_id: 1,
+    //     prod_name: "經典純棉素色T恤",
+    //     prod_desc:
+    //       "採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。",
+    //     prod_cate_id: 5,
+    //     prod_status: 0,
+    //     create_at: null,
+    //     image_url: null,
+    //   });
+
+    //   this.paginatedProducts = mockData;
+    // },
+    // testMe2() {
+    //   console.log(this.paginatedProducts);
+    // },
+  }));
+});
