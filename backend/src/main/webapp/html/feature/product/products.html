@@ -40,7 +40,8 @@
                     <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
                 </div>
                 <div class="table-responsive" x-data="pagination"
-                    x-on:update-total-pages.window="totalPages = $event.detail.newTotal">
+                    x-on:update-total-pages.window="totalPages = $event.detail.newTotal"
+                    x-on:update-products.window="paginatedProducts = $event.detail.paginatedProducts">
 
                     <!-- 商品table -->
 
@@ -57,79 +58,34 @@
                             </thead>
 
 
-                            <tbody x-for="product in paginatedProducts">
-                                <tr class="align-middle">
-                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
-                                            width="40"></td>
-                                    <td>00001</td>
-                                    <td>經典純棉素色T恤</td>
-                                    <td><span class="badge bg-success">上架中</span></td>
-                                    <td>
-                                        <a href="#" @click="newVisible = !newVisible"
-                                            class="btn btn-sm btn-outline-primary"><i
-                                                class="bi bi-pencil-square"></i></a>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
-                                            width="40"></td>
-                                    <td>00001</td>
-                                    <td>經典純棉素色T恤</td>
-                                    <td><span class="badge bg-success">上架中</span></td>
-                                    <td>
-                                        <a href="#" @click="newVisible = !newVisible"
-                                            class="btn btn-sm btn-outline-primary"><i
-                                                class="bi bi-pencil-square"></i></a>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
-                                            width="40"></td>
-                                    <td>00001</td>
-                                    <td>經典純棉素色T恤</td>
-                                    <td><span class="badge bg-success">上架中</span></td>
-                                    <td>
-                                        <a href="#" @click="newVisible = !newVisible"
-                                            class="btn btn-sm btn-outline-primary"><i
-                                                class="bi bi-pencil-square"></i></a>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
-                                            width="40"></td>
-                                    <td>00001</td>
-                                    <td>經典純棉素色T恤</td>
-                                    <td><span class="badge bg-success">上架中</span></td>
-                                    <td>
-                                        <a href="#" @click="newVisible = !newVisible"
-                                            class="btn btn-sm btn-outline-primary"><i
-                                                class="bi bi-pencil-square"></i></a>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
-                                            width="40"></td>
-                                    <td>00001</td>
-                                    <td>經典純棉素色T恤</td>
-                                    <td><span class="badge bg-success">上架中</span></td>
-                                    <td>
-                                        <a href="#" @click="newVisible = !newVisible"
-                                            class="btn btn-sm btn-outline-primary"><i
-                                                class="bi bi-pencil-square"></i></a>
-                                    </td>
-                                </tr>
-                                <tr class="align-middle">
-                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
-                                            width="40"></td>
-                                    <td>00001</td>
-                                    <td>經典純棉素色T恤</td>
-                                    <td><span class="badge bg-success">上架中</span></td>
-                                    <td>
-                                        <a href="#" @click="newVisible = !newVisible"
-                                            class="btn btn-sm btn-outline-primary"><i
-                                                class="bi bi-pencil-square"></i></a>
-                                    </td>
-                                </tr>
+                            <tbody>
+
+
+                                <template x-for="product in paginatedProducts">
+                                    <tr class="align-middle">
+                                        <!-- <td x-text="product.image_url"></td> -->
+
+                                        <template x-if="product.image_url != null">
+                                            <td><img src="" alt="product image" width="40"></td>
+                                        </template>
+                                        <template x-if="product.image_url == null">
+                                            <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG"
+                                                    alt="product image" width="40"></td>
+                                        </template>
+
+
+                                        <td x-text="product.prod_id"></td>
+                                        <td x-text="product.prod_name"></td>
+                                        <td x-text="product.prod_status"></td>
+                                        <!-- <td><span class="badge bg-success">上架中</span></td> -->
+                                        <td>
+                                            <a href="#" @click="newVisible = !newVisible"
+                                                class="btn btn-sm btn-outline-primary"><i
+                                                    class="bi bi-pencil-square"></i></a>
+                                        </td>
+                                    </tr>
+                                </template>
+
                             </tbody>
 
                         </table>

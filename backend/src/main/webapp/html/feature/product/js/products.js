@@ -136,6 +136,16 @@ export default async function init() {
 
     // 在 window 上廣播這個事件
     window.dispatchEvent(event);
+
+    // 建立一個自訂事件
+    const event2 = new CustomEvent("update-products", {
+      detail: {
+        paginatedProducts: products,
+      },
+    });
+
+    // 在 window 上廣播這個事件
+    window.dispatchEvent(event2);
   } catch (error) {
     //初始化頁面錯誤處理
     console.error("初始化商品頁面時發生錯誤:", error);
