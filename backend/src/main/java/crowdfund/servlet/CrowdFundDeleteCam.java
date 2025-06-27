@@ -1,4 +1,4 @@
-package cart;
+package crowdfund.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,35 +7,30 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Servlet implementation class Test
- */
-@WebServlet("/Test")
-public class Test extends HttpServlet {
+import crowdfund.DAO.FundraisingDao;
+
+@WebServlet("/CrowdFundDeleteCam")
+public class CrowdFundDeleteCam extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Test() {
+    public CrowdFundDeleteCam() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+		String idStr = request.getParameter("campaign_id");
+		try {
+            int campaignId = Integer.parseInt(idStr);
+            FundraisingDao dao = new FundraisingDao();
+            dao.deleteCamById(campaignId);
+            request.setAttribute("cams", dao.getAllCams());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+		request.getRequestDispatcher("/jsp/crowdfund/GetAllCams.jsp").forward(request, response);
 
+}
 }
