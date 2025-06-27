@@ -12,7 +12,7 @@ import { generateCodeFromInteger } from "./rand-str.js"; //產生貨號的前置
 /**
  * @description 引入連接後端的模塊
  */
-import { fetchCategories } from "./api-client.js";
+import { fetchCategories, fetchProducts } from "./api-client.js";
 
 // 將扁平的分類陣列轉換為樹狀結構
 function buildCategoryTree(list) {
@@ -57,6 +57,11 @@ function generateTreeHTML(nodes) {
   html += "</ul>";
   return html;
 }
+
+function generateProductsList(list) {
+  console.log(list);
+}
+
 /**
  * 將選中的分類id和name代入至搜索的form中
  * @param {*} id
@@ -74,6 +79,10 @@ function cateEditFilter(id, name) {
  */
 export default async function init() {
   try {
+    /**
+     * 載入分類樹狀圖
+     */
+
     // 取得分類資料
     const categories = await fetchCategories();
 
@@ -100,14 +109,33 @@ export default async function init() {
     });
 
     /**
-     * 綁定對應按鈕和事件
+     * 載入搜尋商品列表
      */
 
-    // // 綁定新增表單按鈕
-    // // 事件：清空編輯表單
-    // document
-    //   .getElementById("add-new-category-btn")
-    //   .addEventListener("click", clearEditForm);
+    // 取得產品資料
+    const products = await fetchProducts();
+
+    // 生成包含product物件的Array
+    const productsArray = generateProductsList(products);
+
+    // currentPage = 1;
+
+    /**
+     * 廣播按鈕點擊按鍵
+     */
+
+    // 假設你透過 API 取得了新的總頁數
+    const newTotalPagesFromAPI = Math.floor(products.length / 6) + 1;
+
+    // 建立一個自訂事件
+    const event = new CustomEvent("update-total-pages", {
+      detail: {
+        newTotal: newTotalPagesFromAPI, // 將新總頁數放在 detail 物件中
+      },
+    });
+
+    // 在 window 上廣播這個事件
+    window.dispatchEvent(event);
   } catch (error) {
     //初始化頁面錯誤處理
     console.error("初始化商品頁面時發生錯誤:", error);

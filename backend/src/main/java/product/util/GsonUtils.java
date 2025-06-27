@@ -1,5 +1,7 @@
 package product.util;
 
+import java.time.LocalDateTime;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,7 +15,9 @@ public final class GsonUtils { // 使用 final class，表示這是一個不應�
     private static final Gson GSON = new GsonBuilder()
             // .setDateFormat("yyyy-MM-dd HH:mm:ss") // 如果需要，可以統一設定日期格式
             // .excludeFieldsWithoutExposeAnnotation() // 如果使用 @Expose，打開此註解
-            .create();
+    		.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+    		.serializeNulls()
+    		.create();
 
     // 如果需要一個用於調試、帶有縮進的 "漂亮" JSON 格式，可以再建立一個
     private static final Gson PRETTY_GSON = new GsonBuilder()
