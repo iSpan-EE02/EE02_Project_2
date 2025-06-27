@@ -1,74 +1,283 @@
-<!-- 商品列表頁面 (預設顯示) -->
-<div id="product-list" class="product-page" style="display: block;">
-    <div
-        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">商品管理</h1>
-        <button class="btn btn-success" onclick="showSubPage('product-add')"><i class="bi bi-plus-circle"></i>
-            新增商品</button>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <h6>按分類篩選</h6>
-            <div class="category-tree">
-                <!-- 分類樹結構 -->
+<section x-data="{ newVisible: false }" id="product-main-section">
+
+
+
+    <!-- 商品列表頁面 (預設顯示) -->
+    <div id="product-list" class="product-page" style="display: block;" x-show="!newVisible">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">商品管理</h1>
+            <button class="btn btn-success" @click="newVisible = !newVisible"><i class="bi bi-plus-circle"></i>
+                新增商品</button>
+        </div>
+        <div class="row">
+
+            <!-- 分類樹狀圖 -->
+            <div class="col-md-3">
+                <h6>按分類篩選</h6>
+                <div class="category-tree" id="product-category-tree">
+                    <div class="d-flex justify-content-center p-3">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">載入中...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 商品查詢列表 -->
+            <div class="col-md-9">
+                <div class="input-group mb-3">
+                    <input id="cate-filter" type="text" class="form-control" value="全部分類" disabled>
+                </div>
+                <div class="input-group mb-3">
+                    <select class="form-select" style="max-width: 150px;">
+                        <option selected>狀態: 全部</option>
+                        <option value="1">● 上架中</option>
+                        <option value="2">○ 已下架</option>
+                    </select>
+                    <input type="text" class="form-control" placeholder="搜尋商品名稱OR商品ID...">
+                    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="table-responsive">
+
+                    <!-- 商品table -->
+
+                    <div style="height: 350px;">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>圖片</th>
+                                    <th>商品ID</th>
+                                    <th>商品名稱</th>
+                                    <th>狀態</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+                                <tr class="align-middle">
+                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
+                                            width="40"></td>
+                                    <td>00001</td>
+                                    <td>經典純棉素色T恤</td>
+                                    <td><span class="badge bg-success">上架中</span></td>
+                                    <td>
+                                        <a href="#" @click="newVisible = !newVisible"
+                                            class="btn btn-sm btn-outline-primary"><i
+                                                class="bi bi-pencil-square"></i></a>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
+                                            width="40"></td>
+                                    <td>00001</td>
+                                    <td>經典純棉素色T恤</td>
+                                    <td><span class="badge bg-success">上架中</span></td>
+                                    <td>
+                                        <a href="#" @click="newVisible = !newVisible"
+                                            class="btn btn-sm btn-outline-primary"><i
+                                                class="bi bi-pencil-square"></i></a>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
+                                            width="40"></td>
+                                    <td>00001</td>
+                                    <td>經典純棉素色T恤</td>
+                                    <td><span class="badge bg-success">上架中</span></td>
+                                    <td>
+                                        <a href="#" @click="newVisible = !newVisible"
+                                            class="btn btn-sm btn-outline-primary"><i
+                                                class="bi bi-pencil-square"></i></a>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
+                                            width="40"></td>
+                                    <td>00001</td>
+                                    <td>經典純棉素色T恤</td>
+                                    <td><span class="badge bg-success">上架中</span></td>
+                                    <td>
+                                        <a href="#" @click="newVisible = !newVisible"
+                                            class="btn btn-sm btn-outline-primary"><i
+                                                class="bi bi-pencil-square"></i></a>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
+                                            width="40"></td>
+                                    <td>00001</td>
+                                    <td>經典純棉素色T恤</td>
+                                    <td><span class="badge bg-success">上架中</span></td>
+                                    <td>
+                                        <a href="#" @click="newVisible = !newVisible"
+                                            class="btn btn-sm btn-outline-primary"><i
+                                                class="bi bi-pencil-square"></i></a>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
+                                            width="40"></td>
+                                    <td>00001</td>
+                                    <td>經典純棉素色T恤</td>
+                                    <td><span class="badge bg-success">上架中</span></td>
+                                    <td>
+                                        <a href="#" @click="newVisible = !newVisible"
+                                            class="btn btn-sm btn-outline-primary"><i
+                                                class="bi bi-pencil-square"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <!-- 分頁控制 -->
+                    <div class="d-flex align-items-center mb-3 w-50 mx-auto">
+                        <!-- 上一頁按鈕 -->
+                        <button @click="previousPage()" :disabled="currentPage === 1 || isLoading"
+                            class="btn btn-outline-secondary" style="line-height: 16px;">
+                            &lt;
+                        </button>
+
+                        <!-- 頁碼下拉選單 -->
+                        <select x-model.number="currentPage" :disabled="isLoading"
+                            class="form-select form-select-sm mx-auto w-50">
+                            <template x-for="page in totalPages" :key="page">
+                                <option :value="page" x-text="`第 ${page} 頁`"></option>
+                            </template>
+                        </select>
+
+                        <!-- 下一頁按鈕 -->
+                        <button @click="nextPage()" :disabled="currentPage === totalPages || isLoading"
+                            class="btn btn-outline-secondary" style="line-height: 16px;">
+                            &gt;
+                        </button>
+                    </div>
+
+
+
+
+
+
+                </div>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="input-group mb-3">
-                <select class="form-select" style="max-width: 150px;">
-                    <option selected>狀態: 全部</option>
-                    <option value="1">● 上架中</option>
-                    <option value="2">○ 已下架</option>
-                </select>
-                <input type="text" class="form-control" placeholder="搜尋商品名稱或SKU...">
-                <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
+    </div>
+
+
+
+    <!-- 商品新增/編輯頁面 (預設隱藏) -->
+    <div id="product-edit" class="main-content active" x-show="newVisible">
+        <h1 class="h2">編輯商品：經典純棉素色T恤</h1>
+        <hr>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="bi bi-info-circle-fill"></i> 商品基本資料 (Product)</h5>
             </div>
-            <div class="table-responsive">
-                <table class="table table-hover table-sm">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">商品名稱</label>
+                    <input type="text" class="form-control" value="經典純棉素色T恤">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">商品分類</label>
+                    <select class="form-select">
+                        <option>服裝 &gt; 男裝 &gt; 男性上衣</option>
+                        <option>服裝 &gt; 男裝 &gt; 男性褲款</option>
+                        <option>服裝 &gt; 女裝 &gt; 女性上衣</option>
+                    </select>
+                    <small class="form-text text-muted">實際應用中此處應為彈出式分類樹選擇器</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">商品狀態</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="prodStatus" id="statusOn" checked="">
+                            <label class="form-check-label" for="statusOn">上架</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="prodStatus" id="statusOff">
+                            <label class="form-check-label" for="statusOff">下架</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">商品描述</label>
+                    <textarea class="form-control" rows="5">採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。</textarea>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 商品圖片 -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-tags-fill"></i> 商品圖片上傳管理</h5>
+            </div>
+            <div class="card-body">
+                <div>
+                    <img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image" width="40">
+                    <input type="file" name="img1" id="">
+                </div>
+
+                <button class="btn btn-sm btn-outline-success"><i class="bi bi-plus"></i> 手動新增一筆圖片</button>
+            </div>
+        </div>
+
+        <!-- 商品款式 -->
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-tags-fill"></i> 商品款式與庫存 (SKU)</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>圖片</th>
-                            <th>商品名稱</th>
-                            <th>狀態</th>
+                            <th>SKU 貨號</th>
+                            <th>價格</th>
+                            <th>庫存</th>
                             <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image"
-                                    width="40"></td>
-                            <td>經典純棉素色T恤</td>
-                            <td><span class="badge bg-success">上架中</span></td>
-                            <td>
-                                <a href="#" onclick="showSubPage('product-edit')"
-                                    class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></a>
+                            <td><input type="text" class="form-control" value="CCT-WHI-M"></td>
+                            <td><input type="number" class="form-control" value="499.00"></td>
+                            <td><input type="number" class="form-control" value="150"></td>
+                            <td><button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="form-control" value="CCT-WHI-L"></td>
+                            <td><input type="number" class="form-control" value="499.00"></td>
+                            <td><input type="number" class="form-control" value="120"></td>
+                            <td><button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" class="form-control" value="CCT-BLK-M"></td>
+                            <td><input type="number" class="form-control" value="499.00"></td>
+                            <td><input type="number" class="form-control" value="180"></td>
+                            <td><button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i></button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <button class="btn btn-sm btn-outline-success"><i class="bi bi-plus"></i> 手動新增一筆 SKU</button>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- 商品新增/編輯頁面 (預設隱藏) -->
-<div id="product-edit" class="product-page" style="display: none;">
-    <h1 class="h2">編輯商品：經典純棉素色T恤</h1>
-    <hr>
-    <div class="card mb-4">
-        <div class="card-header">
-            <h5><i class="bi bi-info-circle-fill"></i> 商品基本資料</h5>
+        <div class="mt-4 text-end">
+            <button class="btn btn-secondary" @click="newVisible = !newVisible">取消</button>
+            <button class="btn btn-primary btn-lg">儲存所有變更</button>
         </div>
-        <div class="card-body">
-            <div class="mb-3">
-                <label class="form-label">商品名稱</label>
-                <input type="text" class="form-control" value="經典純棉素色T恤">
-            </div>
-            <!-- ... 其他表單欄位 ... -->
-        </div>
+
     </div>
-    <div class="mt-4 text-end">
-        <button class="btn btn-secondary" onclick="showSubPage('product-list')">返回列表</button>
-        <button class="btn btn-primary btn-lg">儲存所有變更</button>
-    </div>
-</div>
+
+
+
+
+</section>
