@@ -30,7 +30,6 @@ public class LogiOrderDAO {
                 ps.addBatch();
             }
             ps.executeBatch();
-        
         } catch (SQLException e) {
             e.printStackTrace();
         }

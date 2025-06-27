@@ -28,80 +28,140 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>物流節點管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJpY4e6pWj44Lr8FZ58E8yBYMkgjC9C5N4wM5zq0ZG5h7x7Q8/ucIgrVskdo" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        .card a {
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
+        }
+
+        .table-bordered th,
+        .table-bordered td,
+        .table-bordered {
+            border: 1px solid #000;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #000;
+            padding: 12px 20px; 
+            line-height: 1.5;
+        }
+
+        .table {
+            width: 100%;
+        }
+
+        .card {
+            max-width: 1200px; 
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container mt-5">
-        <h2 class="mb-4">選擇物流單</h2>
-        <form method="get" action="LogiTracking.jsp" class="mb-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="logiId" class="form-label">物流單</label>
-                    <select name="logiId" class="form-select">
-                        <% for (LogiBean b : allLogiList) { %>
-                            <option value="<%= b.getLogiId() %>" <%= (b.getLogiId() == logiId ? "selected" : "") %> >
-                                <%= b.getLogiId() %>
-                            </option>
-                        <% } %>
-                    </select>
-                </div>
-                <div class="col-md-6 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary">查詢節點</button>
+    <div class="container-fluid py-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">物流節點管理</h3>
+                        
+                        <!-- 選擇物流單 -->
+                        <form method="get" action="LogiTracking.jsp" class="mb-4">
+                            <div class="row align-items-end">
+                                <div class="col-md-6">
+                                    <label for="logiId" class="form-label">物流單</label>
+                                    <select name="logiId" class="form-select">
+                                        <% for (LogiBean b : allLogiList) { %>
+                                            <option value="<%= b.getLogiId() %>" <%= (b.getLogiId() == logiId ? "selected" : "") %> >
+                                                <%= b.getLogiId() %>
+                                            </option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary">查詢節點</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- 物流節點表格 -->
+                        <h4 class="mb-4">物流單 <%= logiId %> 的節點</h4>
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>順序</th>
+                                    <th>地點</th>
+                                    <th>狀態</th>
+                                    <th>時間</th>
+                                    <th colspan="2">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (LogiTrackingBean bean : trackingList) { %>
+                                <tr>
+                                    <form action="<%= request.getContextPath() %>/LogiUpdateStatus" method="post">
+                                        <input type="hidden" name="trakId" value="<%= bean.getTrakId() %>" />
+                                        <input type="hidden" name="logiId" value="<%= logiId %>" />
+                                        <td><%= bean.getSequence() %></td>
+                                        <td><input name="locationName" value="<%= bean.getLocationName() %>" class="form-control" /></td>
+                                        <td><input name="status" value="<%= bean.getStatus() %>" class="form-control" /></td>
+                                        <td><input name="timestamp" value="<%= sdf.format(bean.getTimestamp()) %>" class="form-control" /></td>
+                                        <td><button type="submit" name="action" value="更新" class="btn btn-primary btn-sm">更新</button></td>
+                                        <td><button type="submit" name="action" value="刪除" class="btn btn-danger btn-sm">刪除</button></td>
+                                    </form>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+
+                        <!-- 新增節點表單 -->
+                        <h4 class="mt-5 mb-3">新增節點</h4>
+                        <form action="<%= request.getContextPath() %>/LogiUpdateStatus" method="post">
+                            <input type="hidden" name="insertFlag" value="true">
+                            <input type="hidden" name="logiId" value="<%= logiId %>">
+                            <table class="table">
+                                <tr>
+                                    <td><label for="sequence">順序：</label></td>
+                                    <td><input type="number" name="sequence" class="form-control" required></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="locationName">地點：</label></td>
+                                    <td><input type="text" name="locationName" class="form-control" required></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="status">狀態：</label></td>
+                                    <td><input type="text" name="status" class="form-control" placeholder="例:待配送、配送中、已送達" required></td>
+                                </tr>
+                                <tr>
+                                    <td><label for="timestamp">時間：</label></td>
+                                    <td><input type="text" name="timestamp" class="form-control" placeholder="yyyy-MM-dd HH:mm" required></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><button type="submit" class="btn btn-primary">新增節點</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </form>
-
-        <h2 class="mb-4">物流單 <%= logiId %> 的節點</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>順序</th>
-                    <th>地點</th>
-                    <th>狀態</th>
-                    <th>時間</th>
-                    <th colspan="2">操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (LogiTrackingBean bean : trackingList) { %>
-                <tr>
-                    <form action="<%= request.getContextPath() %>/LogiUpdateStatus" method="post">
-                        <input type="hidden" name="trakId" value="<%= bean.getTrakId() %>" />
-                        <input type="hidden" name="logiId" value="<%= logiId %>" />
-                        <td><%= bean.getSequence() %></td>
-                        <td><input name="locationName" value="<%= bean.getLocationName() %>" class="form-control" /></td>
-                        <td><input name="status" value="<%= bean.getStatus() %>" class="form-control" /></td>
-                        <td><input name="timestamp" value="<%= sdf.format(bean.getTimestamp()) %>" class="form-control" /></td>
-                        <td><button type="submit" name="action" value="更新" class="btn btn-warning">更新</button></td>
-                        <td><button type="submit" name="action" value="刪除" class="btn btn-danger">刪除</button></td>
-                    </form>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
-
-        <h3>新增節點</h3>
-        <form action="<%= request.getContextPath() %>/LogiUpdateStatus" method="post">
-            <input type="hidden" name="insertFlag" value="true">
-            <input type="hidden" name="logiId" value="<%= logiId %>">
-            <table class="table">
-                <tr><td><label for="sequence">順序：</label></td>
-                	<td><input type="number" name="sequence" class="form-control" required></td></tr>
-                <tr><td><label for="locationName">地點：</label></td>
-                	<td><input type="text" name="locationName" class="form-control" required></td></tr>
-                <tr><td><label for="status">狀態：</label></td>
-                	<td><input type="text" name="status" class="form-control" required></td></tr>
-                <tr><td><label for="timestamp">時間：</label></td>
-                	<td><input type="text" name="timestamp" class="form-control" placeholder="yyyy-MM-dd HH:mm" required></td></tr>
-                <tr><td colspan="2"><button type="submit" class="btn btn-success">新增節點</button></td></tr>
-            </table>
-        </form>
+        </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0Xm8R63e4PK59M8gdbPRFvh+Khkysdjf5IH1ISk5t3dW3jj2" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

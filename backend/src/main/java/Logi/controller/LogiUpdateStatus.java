@@ -20,19 +20,6 @@ public class LogiUpdateStatus extends HttpServlet {
         // 導回 LogiTracking.jsp 頁面
         response.sendRedirect(request.getContextPath() + "/jsp/Logi/LogiTracking.jsp");
     }
-	
-//    @Override
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        int logiId = Integer.parseInt(request.getParameter("logiId"));
-//        LogiTrackingDAO dao = new LogiTrackingDAO();
-//        List<LogiTrackingBean> list = dao.findByLogiId(logiId);
-//
-//        request.setAttribute("trackingList", list);
-//        request.setAttribute("logiId", logiId);
-//        RequestDispatcher rd = request.getRequestDispatcher("/jsp/Logi/LogiTracking.jsp");
-//        rd.forward(request, response);
-//    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -43,7 +30,7 @@ public class LogiUpdateStatus extends HttpServlet {
         int logiId = Integer.parseInt(logiIdStr);
         LogiTrackingDAO dao = new LogiTrackingDAO();
 
-        // ✅ 新增節點（由 insertFlag 判斷）
+        // 新增節點（由 insertFlag 判斷）
         if (request.getParameter("insertFlag") != null) {
             int sequence = Integer.parseInt(request.getParameter("sequence"));
             String location = request.getParameter("locationName");
@@ -62,7 +49,7 @@ public class LogiUpdateStatus extends HttpServlet {
             }            
         }
 
-        // ✅ 編輯用表單（含更新與刪除）
+        // 編輯用表單（含更新與刪除）
         String action = request.getParameter("action");
 
         if ("更新".equals(action)) {
@@ -87,7 +74,7 @@ public class LogiUpdateStatus extends HttpServlet {
             dao.deleteTracking(trakIdToDelete);
         }
 
-        // ✅ 執行完動作後重新導向回查詢
+        // 執行完動作後重新導向回查詢
         response.sendRedirect(request.getContextPath() + "/jsp/Logi/LogiTracking.jsp?logiId=" + logiId);
     }
 }

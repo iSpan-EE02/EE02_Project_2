@@ -13,14 +13,12 @@ public class LogiDAO {
     		"SELECT * FROM Logi";
     private static final String INSERT_LOGI = // 建立物流單
     		"INSERT INTO Logi (driver_id, estimated_arrival, total_fee, total_distance) VALUES (?, ?, ?, ?)";
-    private static final String UPDATE_ACTUAL_ARRIVAL = // 更新實際到貨時間
-    		"UPDATE Logi SET actual_arrival = ? WHERE logi_id = ?";
     private static final String SELECT_BY_LOGIID = // 根據 logiId 查詢單一物流單
     		"SELECT * FROM Logi WHERE logi_id = ?";
     private static final String UPDATE_LOGI = // 更新物流單
-            "UPDATE Logi SET driver_id = ?, estimated_arrival = ?, total_fee = ?, total_distance = ?, actual_arrival = ? WHERE logi_id = ?";
-    private static final String DELETE_LOGI = // 刪除物流單
-    		"DELETE FROM Logi WHERE logi_id = ?";
+    		"UPDATE Logi SET driver_id = ?, estimated_arrival = ?, total_fee = ?, total_distance = ?, actual_arrival = ? WHERE logi_id = ?";
+    private static final String UPDATE_ACTUAL_ARRIVAL = // 更新實際到貨時間
+    		"UPDATE Logi SET actual_arrival = ? WHERE logi_id = ?";
 
     private DataSource ds;
 
@@ -33,9 +31,10 @@ public class LogiDAO {
         }
     }
     
+	// 查詢物流單表格中的所有資料
     public List<LogiBean> findAll() {
         List<LogiBean> list = new ArrayList<>();
-        String sql = "SELECT * FROM Logi"; // 查詢 Logi 表格中的所有資料
+        String sql = "SELECT * FROM Logi"; 
         try (Connection conn = ds.getConnection();
         		 PreparedStatement ps = conn.prepareStatement(SELECT_ALL_LOGI);
                 ResultSet rs = ps.executeQuery()) {
@@ -72,6 +71,7 @@ public class LogiDAO {
         }
         return -1;
     }
+    
     // 根據 logiId 查詢單一物流單
     public List<LogiBean> findByLogiId(int logiId) {
         List<LogiBean> list = new ArrayList<>();
@@ -96,6 +96,7 @@ public class LogiDAO {
         return list;
     }
 
+	// 更新物流單
     public void updateLogi(LogiBean logi) {
         try (Connection conn = ds.getConnection();
              PreparedStatement ps = conn.prepareStatement(UPDATE_LOGI)) {
@@ -112,18 +113,6 @@ public class LogiDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    // 刪除物流單的方法
-    public void delete(int logiId) throws SQLException {
-        try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement(DELETE_LOGI)) {
-        	System.out.println("接收到的 122 logiId = " + logiId);
-        	ps.setInt(1, logiId); // 設定查詢條件
-            ps.executeUpdate(); // 執行刪除操作
-        } catch (SQLException e) {
-            throw new SQLException("刪除物流單失敗", e);
         }
     }
     

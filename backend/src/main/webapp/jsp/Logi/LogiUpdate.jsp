@@ -3,7 +3,7 @@
 <%
     // 取得 logiId 的參數，如果有選擇某個 logiId，就篩選出該條物流單
     String logiIdStr = request.getParameter("logiId");
-    LogiDAO dao = new LogiDAO();  // 初始化 DAO
+    LogiDAO dao = new LogiDAO();
     LogiBean logi = null;
 
     if (logiIdStr != null) {
@@ -45,57 +45,80 @@
     <title>更新物流單</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-KyZXEJpY4e6pWj44Lr8FZ58E8yBYMkgjC9C5N4wM5zq0ZG5h7x7Q8/ucIgrVskdo"
-          crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        .card a {
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
+        }
+
+        .form-control {
+            padding: 12px 20px;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h2 class="mb-4">更新物流單</h2>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">更新物流單</h3>
 
-    <form method="post" novalidate>
-        <input type="hidden" name="logiId" value="<%= logi != null ? logi.getLogiId() : "" %>">
-		
-		<div class="mb-3">
-        <label for="driverId" class="form-label">司機 ID：</label>
-        <input type="text" id="driverId" name="driverId" class="form-control" 
-        	value="<%= logi != null ? logi.getDriverId() : "" %>" required><br><br>
-		</div>
-		
-		<div class="mb-3">
-        <label for="estimatedArrival" class="form-label">預計到達時間：</label>
-        <input type="text" id="estimatedArrival" name="estimatedArrival"  class="form-control" 
-               value="<%= logi != null ? sdf.format(logi.getEstimatedArrival()) : "" %>" required><br><br>
-		</div>
-		
-		<div class="mb-3">
-        <label for="totalFee" class="form-label">總金額：</label>
-        <input type="text" id="totalFee" name="totalFee" class="form-control"
-        	 value="<%= logi != null ? logi.getTotalFee() : "" %>" required><br><br>
-		</div>
-		
-		<div class="mb-3">
-        <label for="totalDistance" class="form-label">總距離：</label>
-        <input type="text" id="totalDistance" name="totalDistance" class="form-control"
-        	 value="<%= logi != null ? logi.getTotalDistance() : "" %>" required><br><br>
-		</div>
-		
-		<div class="mb-3">
-			<label for="actualArrival" class="form-label">實際到達時間：</label>
-        	<input type="text" id="actualArrival" name="actualArrival" class="form-control" 
-     		  value="<%= logi != null && logi.getActualArrival() != null ? sdf.format(logi.getActualArrival()) : "" %>"><br><br>
-		</div>
-		<br><br>
-        <button type="submit" class="btn btn-primary">更新</button>
-        <br><br>
-        <a href="<%= request.getContextPath() %>/jsp/Logi/LogiList.jsp" class="btn btn-secondary ms-2">返回物流單列表</a>
-    </form>
+                        <form method="post" novalidate>
+                            <input type="hidden" name="logiId" value="<%= logi != null ? logi.getLogiId() : "" %>">
+                            
+                            <div class="mb-3">
+                                <label for="driverId" class="form-label">司機 ID：</label>
+                                <input type="text" id="driverId" name="driverId" class="form-control" 
+                                       value="<%= logi != null ? logi.getDriverId() : "" %>" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="estimatedArrival" class="form-label">預計到達時間：</label>
+                                <input type="text" id="estimatedArrival" name="estimatedArrival" class="form-control" 
+                                       value="<%= logi != null ? sdf.format(logi.getEstimatedArrival()) : "" %>" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="totalFee" class="form-label">總金額：</label>
+                                <input type="text" id="totalFee" name="totalFee" class="form-control"
+                                       value="<%= logi != null ? logi.getTotalFee() : "" %>" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="totalDistance" class="form-label">總距離：</label>
+                                <input type="text" id="totalDistance" name="totalDistance" class="form-control"
+                                       value="<%= logi != null ? logi.getTotalDistance() : "" %>" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="actualArrival" class="form-label">實際到達時間：</label>
+                                <input type="text" id="actualArrival" name="actualArrival" class="form-control" 
+                                       value="<%= logi != null && logi.getActualArrival() != null ? sdf.format(logi.getActualArrival()) : "" %>">
+                            </div>
+                            
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">更新</button>
+                                <a href="<%= request.getContextPath() %>/jsp/Logi/LogiList.jsp" class="btn btn-secondary ms-2">返回物流單列表</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pzjw8f+ua7Kw1TIq0Xm8R63e4PK59M8gdbPRFvh+Khkysdjf5IH1ISk5t3dW3jj2"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-
-

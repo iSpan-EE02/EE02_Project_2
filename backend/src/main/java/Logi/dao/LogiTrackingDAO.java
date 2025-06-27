@@ -9,11 +9,14 @@ import javax.sql.DataSource;
 import Logi.bean.LogiTrackingBean;
 
 public class LogiTrackingDAO {
-    private static final String FIND_BY_LOGIID = 
+    private static final String FIND_BY_LOGIID = // 查詢節點
     		"SELECT * FROM Logi_Tracking WHERE logi_id = ? ORDER BY sequence";
-    private static final String UPDATE_TRACKING = 
+    private static final String INSERT_TRACKING = // 新增節點
+            "INSERT INTO Logi_Tracking (logi_id, sequence, location_name, status, timestamp) "
+          + "VALUES (?, ?, ?, ?, ?)";
+    private static final String UPDATE_TRACKING = // 更新節點
     		"UPDATE Logi_Tracking SET location_name = ?, status = ?, timestamp = ? WHERE trak_id = ?";
-    private static final String DELETE_TRACKING =
+    private static final String DELETE_TRACKING = // 刪除節點
 	        "DELETE FROM Logi_Tracking WHERE trak_id = ?";
 	    
     private DataSource ds;
@@ -49,11 +52,11 @@ public class LogiTrackingDAO {
         }
         return list;
     }
+    
     // 新增節點
     public void insertTracking(LogiTrackingBean bean) {
-        String sql = "INSERT INTO Logi_Tracking (logi_id, sequence, location_name, status, timestamp) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = ds.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(INSERT_TRACKING)) {
             ps.setInt(1, bean.getLogiId());
             ps.setInt(2, bean.getSequence());
             ps.setString(3, bean.getLocationName());
