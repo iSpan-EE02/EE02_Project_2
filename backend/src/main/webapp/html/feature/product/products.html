@@ -39,9 +39,7 @@
                     <input type="text" class="form-control" placeholder="搜尋商品名稱OR商品ID...">
                     <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
                 </div>
-                <div class="table-responsive" x-data="pagination"
-                    x-on:update-total-pages.window="totalPages = $event.detail.newTotal"
-                    x-on:update-products.window="paginatedProducts = $event.detail.paginatedProducts">
+                <div class="table-responsive" x-data="pagination" x-init="init()">
 
                     <!-- 商品table -->
 
