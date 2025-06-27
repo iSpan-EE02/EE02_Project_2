@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>物流管理</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background-color: #f4f6f9;
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .function-list {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .function-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .function-item a {
+            font-size: 18px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .function-item a:hover {
+            text-decoration: underline;
+        }
+
+        .description {
+            font-size: 14px;
+            color: #555;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>物流管理</h1>
+    <div class="function-list">
+        <div class="function-item">
+            <a href="/Project2/jsp/Logi/LogiList.jsp">物流單管理</a>
+            <div class="description">新增、修改、刪除、查詢物流單</div>
+        </div>
+        <div class="function-item">
+            <a href="/Project2/LogiUpdateStatus?logiId=1">配送節點管理</a>
+            <div class="description">新增、修改、刪除、查詢配送節點</div>
+        </div>
+        <div class="function-item">
+            <a href="/Project2/jsp/Logi/LogiEmpList.jsp">司機資料</a>
+            <div class="description">查看所有司機聯絡方式</div>
+        </div>
+        <div class="function-item">
+            <a href="/Project2/jsp/Logi/LogiOsList.jsp">訂單資料</a>
+            <div class="description">瀏覽所有訂單基本資料</div>
+        </div>
+    </div>
+</body>
+</html>
