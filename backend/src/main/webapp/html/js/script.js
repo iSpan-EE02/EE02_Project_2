@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+//alpine.js相關
 document.addEventListener("alpine:init", () => {
   Alpine.data("pagination", () => ({
     paginatedProducts: [],
@@ -97,5 +98,23 @@ document.addEventListener("alpine:init", () => {
         this.currentPage++;
       }
     },
+    // testMe() {
+    //   const mockData = [];
+    //   mockData.push({
+    //     prod_id: 1,
+    //     prod_name: "經典純棉素色T恤",
+    //     prod_desc:
+    //       "採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。",
+    //     prod_cate_id: 5,
+    //     prod_status: 0,
+    //     create_at: null,
+    //     image_url: null,
+    //   });
+
+    //   this.paginatedProducts = mockData;
+    // },
+    // testMe2() {
+    //   console.log(this.paginatedProducts);
+    // },
   }));
 });
