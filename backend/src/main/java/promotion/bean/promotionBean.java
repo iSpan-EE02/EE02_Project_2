@@ -108,3 +108,4 @@ public class promotionBean implements java.io.Serializable {
 
 	
 }
+
