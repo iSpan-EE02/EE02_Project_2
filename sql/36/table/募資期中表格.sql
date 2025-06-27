@@ -26,9 +26,6 @@ VALUES
 ('永續服飾品牌起步計畫', '時尚', 90000, 45000, '2025-03-01', '2025-05-01', '已結束', 1, '以環保布料製作簡約設計服飾，響應永續生活。'),
 ('開放資料應用黑客松', '科技', 50000, 50000, '2025-05-01', '2025-06-01', '成功', 5, '結合開放資料與程式設計，激發社會創新應用。');
 UPDATE campaigns
-SET cover_image = 'uploads/default.jpg'
-WHERE campaign_id between 1 and 11;
+SET cover_image = 'jsp/crowdfund/uploads/default.jpg'
+WHERE campaign_id between 1 and 10;
 
-select *from campaigns
-DROP TABLE campaigns;
-truncate table campaigns
