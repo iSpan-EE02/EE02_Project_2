@@ -73,11 +73,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+//alpine.js相關
 document.addEventListener("alpine:init", () => {
   Alpine.data("pagination", () => ({
-    paginatedProducts: [],
+    // paginatedProducts: [],
+    // currentPage: 1,
+    // totalPages: 10, // 假設總共有10頁
+
+    allProducts: [], // 1. 用於儲存從 API 來的完整商品列表
     currentPage: 1,
-    totalPages: 10, // 假設總共有10頁
+    totalPages: 1, // 預設值改為 1
+    itemsPerPage: 6, // 2. 設定每頁顯示 6 筆商品
+
+    get paginatedProducts() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      // 使用 slice() 從完整列表中切割出當前頁的資料
+      return this.allProducts.slice(start, end);
+    },
 
     // 你也可以在這裡定義方法
     goToPage(page) {
@@ -97,5 +110,34 @@ document.addEventListener("alpine:init", () => {
         this.currentPage++;
       }
     },
+    init() {
+      // 監聽從 products.js 來的事件
+      window.addEventListener("update-total-pages", (event) => {
+        this.totalPages = event.detail.newTotal;
+      });
+
+      window.addEventListener("update-products", (event) => {
+        // 4. 更新 allProducts，而不是 paginatedProducts
+        this.allProducts = event.detail.paginatedProducts;
+      });
+    },
+    // testMe() {
+    //   const mockData = [];
+    //   mockData.push({
+    //     prod_id: 1,
+    //     prod_name: "經典純棉素色T恤",
+    //     prod_desc:
+    //       "採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。",
+    //     prod_cate_id: 5,
+    //     prod_status: 0,
+    //     create_at: null,
+    //     image_url: null,
+    //   });
+
+    //   this.paginatedProducts = mockData;
+    // },
+    // testMe2() {
+    //   console.log(this.paginatedProducts);
+    // },
   }));
 });
