@@ -1,12 +1,13 @@
+
 # iSpan Project 2
 
 這是一個電商專案，
-使用Eclipse建立的Dynamic Web Project，
-採用MVC架構：
-Model：（JavaBean Class）
-View：（html和JSP）
-Controller：（Servlet）
-資料庫：MS SQL Server
+- 使用Eclipse建立的Dynamic Web Project，
+- 採用MVC架構：
+  - Model：（JavaBean Class）
+  - View：（html和JSP）
+  - Controller：（Servlet）
+  - 資料庫：MS SQL Server
 
 ## 專案結構
 
@@ -31,4 +32,5 @@ Project2/
 3. 在sql server中建立資料庫project2
 4. 在eclipse中新建server
 5. 在server中配置JNDI資料（context.xml,server.xml）
+
 
