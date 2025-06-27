@@ -1,0 +1,67 @@
+<!-- 1. 儀表板頁面 -->
+<h1 class="h2">儀表板（施工中）</h1>
+<p>歡迎回來，營運專員！</p>
+
+<div class="row my-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-box-seam-fill"></i> 上架中商品</h5>
+                <p class="card-text fs-2">158</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-currency-dollar"></i> 庫存總值</h5>
+                <p class="card-text fs-2">$1,234,567</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-receipt-cutoff"></i> 今日訂單</h5>
+                <p class="card-text fs-2">42</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-secondary mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-tags-fill"></i> 總 SKU 數</h5>
+                <p class="card-text fs-2">750</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <i class="bi bi-exclamation-triangle-fill"></i> 待辦事項 & 警報
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">低庫存警報 (庫存 < 10)</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        CCT-BLK-XXL (經典純棉素色T恤 - 黑 - XXL) - <span class="badge bg-danger">庫存: 0</span>
+                        <button class="btn btn-sm btn-outline-primary"
+                            onclick="showSubPage('product-edit')">前往處理</button>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        HDS-BLU-L (高腰A字丹寧長裙 - 藍 - L) - <span class="badge bg-warning text-dark">庫存: 5</span>
+                        <button class="btn btn-sm btn-outline-primary"
+                            onclick="showSubPage('product-edit')">前往處理</button>
+                    </li>
+                </ul>
+    </div>
+</div>
+
+<div class="mt-4">
+    <h4>快速入口</h4>
+    <button class="btn btn-lg btn-success" onclick="loadPage('./feature/product/products', event)"><i class="bi bi-plus-circle-fill"></i>
+        管理商品</button>
+    <button class="btn btn-lg btn-info text-white" onclick="loadPage('./feature/product/categories', event)"><i
+            class="bi bi-diagram-3-fill"></i> 管理商品分類</button>
+</div>
