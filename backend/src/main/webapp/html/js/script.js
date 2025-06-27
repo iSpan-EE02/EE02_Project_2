@@ -76,9 +76,21 @@ document.addEventListener("DOMContentLoaded", () => {
 //alpine.js相關
 document.addEventListener("alpine:init", () => {
   Alpine.data("pagination", () => ({
-    paginatedProducts: [],
+    // paginatedProducts: [],
+    // currentPage: 1,
+    // totalPages: 10, // 假設總共有10頁
+
+    allProducts: [], // 1. 用於儲存從 API 來的完整商品列表
     currentPage: 1,
-    totalPages: 10, // 假設總共有10頁
+    totalPages: 1, // 預設值改為 1
+    itemsPerPage: 6, // 2. 設定每頁顯示 6 筆商品
+
+    get paginatedProducts() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      // 使用 slice() 從完整列表中切割出當前頁的資料
+      return this.allProducts.slice(start, end);
+    },
 
     // 你也可以在這裡定義方法
     goToPage(page) {
@@ -97,6 +109,17 @@ document.addEventListener("alpine:init", () => {
       } else {
         this.currentPage++;
       }
+    },
+    init() {
+      // 監聽從 products.js 來的事件
+      window.addEventListener("update-total-pages", (event) => {
+        this.totalPages = event.detail.newTotal;
+      });
+
+      window.addEventListener("update-products", (event) => {
+        // 4. 更新 allProducts，而不是 paginatedProducts
+        this.allProducts = event.detail.paginatedProducts;
+      });
     },
     // testMe() {
     //   const mockData = [];
