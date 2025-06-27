@@ -1,38 +1,40 @@
-package cart;
+package orders.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import orders.dao.OrdersDao;
+import orders.utils.LAButil;
 
-/**
- * Servlet implementation class Test
- */
-@WebServlet("/Test")
-public class Test extends HttpServlet {
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+
+
+@WebServlet("/DeleteOrders")
+public class DeleteOrders extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Test() {
+	Connection conn;
+    public DeleteOrders() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		int ordersId =Integer.parseInt(request.getParameter("orders_id"));
+		OrdersDao dao = new OrdersDao();
+		dao.deleteOrders(ordersId);
+		response.sendRedirect(request.getContextPath()+"/AllOrders");
+		
+		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
