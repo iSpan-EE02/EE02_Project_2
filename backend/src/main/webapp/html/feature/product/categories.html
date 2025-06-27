@@ -1,0 +1,55 @@
+<!-- 商品分類管理頁面 -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">商品分類管理</h1>
+    <button class="btn btn-primary" id="add-new-category-btn"><i class="bi bi-plus-circle"></i> 新增分類</button>
+</div>
+<div class="row">
+    <!-- 左側分類樹 -->
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">分類結構</div>
+            <!-- JS 將會把分類樹的 HTML 插入到這裡 -->
+            <div id="category-tree-container" class="card-body category-tree">
+                <div class="d-flex justify-content-center p-3">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">載入中...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 右側編輯表單 -->
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header" id="edit-form-header">請選擇一個分類進行編輯</div>
+            <div class="card-body">
+                <form id="category-edit-form">
+                    <!-- 用於追蹤正在編輯的分類ID，設為 hidden -->
+                    <input type="hidden" id="edit-cate-id" value="" name="cate-id" disabled>
+
+                    <div class="mb-3">
+                        <label for="edit-cate-name" class="form-label">分類名稱</label>
+                        <input type="text" class="form-control" id="edit-cate-name" name="cate-name" required disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-parent-cate" class="form-label">父分類</label>
+                        <!-- JS 將會動態填入父分類選項 -->
+                        <select class="form-select" id="edit-parent-cate" name="cate-parent-id" disabled>
+                            <option value="0">（此為頂層分類）</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit-cate-desc" class="form-label">分類描述</label>
+                        <textarea class="form-control" id="edit-cate-desc" rows="3" name="cate-desc"
+                            required disabled></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-outline-danger me-2" id="delete-category-btn" x-show="true"
+                            disabled>刪除</button>
+                        <button type="submit" class="btn btn-primary" id="save-category-btn">儲存變更</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
