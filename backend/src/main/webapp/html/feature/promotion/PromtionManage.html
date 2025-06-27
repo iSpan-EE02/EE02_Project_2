@@ -1,98 +1,104 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<title>活動管理</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">	
-<style>
-	body{
-		background-color:#fdf5e6;
-		font-family:Arial;
-	}
-	.container{
-		width:60%;
-		margin:0 auto;
-	}
-	
-	form{
-		margin-bottom:20px;
-	}
-	
-	.form-group{
-		max-width:500px;
-		margin:10px auto;
-		text-align:left;	
-	}
-	
-	.form-group label{
-		display:inline-block;
-		width:100px;
-		font-weight:bold;
-	}
-	
-	.form-group input,
-	.form-group select{
-		width:250px;
-		padding:5px;
-		font-size:16px;
-	}
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+	<style>
+		body {
+			background-color: #fdf5e6;
+			font-family: Arial;
+		}
 
-	.actions{
-		display:flex;
-		justify-content:space-between;
-		width:100%;
-		max-width:500px;
-		margin:20px auto;
-	}
+		.container {
+			width: 60%;
+			margin: 0 auto;
+		}
 
-	.actions a{
-		text-decoration: none;
-		background-color: #ffd966;
-		padding: 10px 20px;
-		border-radius: 6px;
-		color: black;
-		font-weight: bold;
-		text-align: center;
-		flex: 1;
-		margin: 0 5px;
-	}
-	.actions a :hover{
-		background-color: #ffc107;
-	}
+		form {
+			margin-bottom: 20px;
+		}
 
-</style>
+		.form-group {
+			max-width: 500px;
+			margin: 10px auto;
+			text-align: left;
+		}
+
+		.form-group label {
+			display: inline-block;
+			width: 100px;
+			font-weight: bold;
+		}
+
+		.form-group input,
+		.form-group select {
+			width: 250px;
+			padding: 5px;
+			font-size: 16px;
+		}
+
+		.actions {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			max-width: 500px;
+			margin: 20px auto;
+		}
+
+		.actions a {
+			text-decoration: none;
+			background-color: #ffd966;
+			padding: 10px 20px;
+			border-radius: 6px;
+			color: black;
+			font-weight: bold;
+			text-align: center;
+			flex: 1;
+			margin: 0 5px;
+		}
+
+		.actions a :hover {
+			background-color: #ffc107;
+		}
+	</style>
 </head>
+
 <body>
-<div class="container" >
-<h2 style="text-align:center;">活 動 管 理</h2>
-	
-<form method="post" action="../../PromotionGet">
-	<div class="form-group">
-	<label>活動名稱 :</label> 
-	<input type="text" name="keyword" />
-	<button type="submit" title="搜尋名稱"><i class="fa-solid fa-magnifying-glass"></i></button></P></div>
+	<div class="container">
+		<h2 style="text-align:center;">活 動 管 理</h2>
 
-	<div class="form-group">
-	<label>活動類型 :</label>
-	<select name="type" required>
-	<option value="請選擇" disabled selected>請選擇</option>
-	<option value="滿額折扣">滿額折扣</option>
-	<option value="滿件優惠">滿件優惠</option>
-	<option value="折價券">折價券</option>
-	<option value="限時優惠">限時優惠</option>
-	<option value="免運">免運</option>
-	<option value="點數回饋">點數回饋</option>
-	<option value="組合活動">組合活動</option>
-	</select>
-	<button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button></P>
-	</div></form>
+		<form method="post" action="../../../PromotionGet">
+			<div class="form-group">
+				<label>活動名稱 :</label>
+				<input type="text" name="keyword" />
+				<button type="submit" title="搜尋名稱"><i class="fa-solid fa-magnifying-glass"></i></button></P>
+			</div>
 
-<div class="actions">
-	<a href="../../PromotionInsert">新增</a>
-	<a href="../../PromotionAll">查詢全部資料</a>
-	<a href="#"><i class="fa-solid fa-house"></i></a><P>
-</div>
-</div>
+			<div class="form-group">
+				<label>活動類型 :</label>
+				<select name="type" required>
+					<option value="請選擇" disabled selected>請選擇</option>
+					<option value="滿額折扣">滿額折扣</option>
+					<option value="滿件優惠">滿件優惠</option>
+					<option value="折價券">折價券</option>
+					<option value="限時優惠">限時優惠</option>
+					<option value="免運">免運</option>
+					<option value="點數回饋">點數回饋</option>
+					<option value="組合活動">組合活動</option>
+				</select>
+				<button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button></P>
+			</div>
+		</form>
+
+		<div class="actions">
+			<a href="../../../PromotionInsert">新增</a>
+			<a href="../../../PromotionAll">查詢全部資料</a>
+			<a href="#"><i class="fa-solid fa-house"></i></a>
+			<P>
+		</div>
+	</div>
 </body>
-</html>
 
+</html>
