@@ -34,7 +34,7 @@
                         <input id="cate-filter" type="text" class="form-control" value="全部類別" placeholder="全部分類"
                             readonly>
                         <button id="clear-cate-btn" class="btn btn-outline-secondary" type="button"><i
-                                class="bi bi-dash-square"></i></button>
+                                class="bi bi-x-circle-fill"></i></button>
                     </div>
                     <div class="input-group mb-3">
                         <select class="form-select" style="max-width: 150px;" name="prod-status">
@@ -100,9 +100,9 @@
                                         </td>
 
                                         <td>
-                                            <a href="#" @click="newVisible = !newVisible"
-                                                class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"
-                                                    onclick="prodItemEdit()"></i></a>
+                                            <a href="#" @click.prevent="editProduct(product); newVisible = true"
+                                                class="btn btn-sm btn-outline-primary prod-edit-btn"><i
+                                                    class="bi bi-pencil-square" :data-prod-id="product.prod_id"></i></a>
                                         </td>
                                     </tr>
                                 </template>
@@ -163,11 +163,12 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">商品名稱</label>
-                        <input type="text" class="form-control" placeholder="EX:經典純棉素色T恤" name="prod-name" required>
+                        <input type="text" class="form-control" placeholder="EX:經典純棉素色T恤" name="prod-name"
+                            id="prod-name" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">商品分類</label>
-                        <select class="form-select" name="prod-cate-select">
+                        <select class="form-select" name="prod-cate-select" id="prod-cate-select">
                             <option>default</option>
                         </select>
                     </div>
@@ -175,15 +176,16 @@
                         <label class="form-label">商品狀態</label>
                         <div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prodStatus" id="statusEmpty" checked>
+                                <input class="form-check-input" type="radio" name="prodStatus" id="statusEmpty"
+                                    value="0" checked>
                                 <label class="form-check-label" for="statusEmpty">未上架</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prodStatus" id="statusON">
+                                <input class="form-check-input" type="radio" name="prodStatus" id="statusON" value="1">
                                 <label class="form-check-label" for="statusON">上架中</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="prodStatus" id="statusOff">
+                                <input class="form-check-input" type="radio" name="prodStatus" id="statusOff" value="2">
                                 <label class="form-check-label" for="statusOff">已下架</label>
                             </div>
                         </div>
@@ -191,7 +193,7 @@
                     <div class="mb-3">
                         <label class="form-label">商品描述</label>
                         <textarea class="form-control" rows="5" name="prod-desc"
-                            placeholder="EX:採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。" required></textarea>
+                            placeholder="EX:採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。" id="prod-desc" required></textarea>
                     </div>
                 </div>
             </div>

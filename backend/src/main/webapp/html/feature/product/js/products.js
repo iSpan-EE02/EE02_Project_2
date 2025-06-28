@@ -102,13 +102,50 @@ function newProd() {
   skuEdit("new");
 }
 
-function prodItemEdit() {
-  console.log("編輯商品");
-  document.getElementById("product-edit-head").innerText = "編輯商品";
+window.editProduct = function (product) {
+  // console.log("編輯商品");
+  document.getElementById("product-edit-head").innerText =
+    "編輯商品:" + product["prod_name"];
+  console.log(product);
+
+  document.getElementById("prod-name").value = product["prod_name"];
+  document.getElementById("prod-cate-select").value = product["prod_cate_id"];
+  document.getElementById("prod-desc").value = product["prod_desc"];
+
+  switch (product["prod_status"]) {
+    case 0:
+      // 選擇「未上架」
+      document.getElementById("statusEmpty").checked = true;
+      break;
+    case 1:
+      // 選擇「上架中」
+      document.getElementById("statusON").checked = true;
+      break;
+    case 2:
+      // 選擇「已下架」
+      document.getElementById("statusOff").checked = true;
+      break;
+
+    default:
+      break;
+  }
+
+  const prodID = product["prod_id"];
+  console.log(prodID);
+  console.log("hi");
+
+  // event.preventDefault();
+  //     const targetLi = event.target.closest("li");
+  //     if (targetLi.dataset) {
+  //       // 從 li 元素中的 dataset 中讀取分類資訊
+  //       const { id, name, isParent } = targetLi.dataset;
+  //       // 填充右側查詢表單
+  //       cateEditFilter(id, name, isParent);
+  //     }
   // resetEditForm();
   // imgEdit();
   // skuEdit("new");
-}
+};
 
 function imgEdit() {
   const addImageBtn = document.getElementById("addImageBtn");
