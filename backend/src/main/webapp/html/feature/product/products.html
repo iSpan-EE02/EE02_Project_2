@@ -7,7 +7,8 @@
         <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">商品管理</h1>
-            <button class="btn btn-success" @click="newVisible = !newVisible"><i class="bi bi-plus-circle"></i>
+            <button class="btn btn-success" @click="newVisible = !newVisible" id="new-prod-btn"><i
+                    class="bi bi-plus-circle"></i>
                 新增商品</button>
         </div>
         <div class="row">
@@ -118,7 +119,7 @@
 
     <!-- 商品新增/編輯頁面 (預設隱藏) -->
     <div id="product-edit" class="main-content active" x-show="newVisible">
-        <h1 class="h2">編輯商品：經典純棉素色T恤</h1>
+        <h1 class="h2" id="product-edit-head">編輯商品</h1>
         <hr>
         <div class="card mb-4">
             <div class="card-header">
@@ -127,16 +128,13 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label class="form-label">商品名稱</label>
-                    <input type="text" class="form-control" value="經典純棉素色T恤">
+                    <input type="text" class="form-control" placeholder="EX:經典純棉素色T恤" name="prod-name">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">商品分類</label>
-                    <select class="form-select">
-                        <option>服裝 &gt; 男裝 &gt; 男性上衣</option>
-                        <option>服裝 &gt; 男裝 &gt; 男性褲款</option>
-                        <option>服裝 &gt; 女裝 &gt; 女性上衣</option>
+                    <select class="form-select" name="prod-cate-select">
+                        <option>default</option>
                     </select>
-                    <small class="form-text text-muted">實際應用中此處應為彈出式分類樹選擇器</small>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">商品狀態</label>
@@ -153,7 +151,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">商品描述</label>
-                    <textarea class="form-control" rows="5">採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。</textarea>
+                    <textarea class="form-control" rows="5" name="prod-desc"
+                        placeholder="EX:採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。"></textarea>
                 </div>
             </div>
         </div>

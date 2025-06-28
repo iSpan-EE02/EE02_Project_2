@@ -58,10 +58,6 @@ function generateTreeHTML(nodes) {
   return html;
 }
 
-function generateProductsList(list) {
-  console.log(list);
-}
-
 /**
  * 將選中的分類id和name代入至搜索的form中
  * @param {*} id
@@ -70,6 +66,15 @@ function generateProductsList(list) {
 function cateEditFilter(id, name) {
   document.getElementById("cate-filter").setAttribute("data-id", id);
   document.getElementById("cate-filter").value = name;
+}
+
+function newProd() {
+  console.log("新增商品");
+  document.getElementById("product-edit-head").innerText = "新增商品";
+  document.querySelector("input[name = 'prod-name']").value = "";
+  document.querySelector("select[name = 'prod-cate-select']").value = 0;
+  document.getElementById("statusOn").checked = true;
+  document.querySelector("textarea[name = 'prod-desc']").value = "";
 }
 
 /**
@@ -108,6 +113,17 @@ export default async function init() {
       }
     });
 
+    // 生成編輯表單中父分類的下拉選單
+    const select = document.querySelector("select[name = 'prod-cate-select']");
+    select.innerHTML = '<option value="0">（此為頂層分類）</option>';
+    // 為每個類別生成option並append到select之下
+    categories.forEach((cat) => {
+      const option = document.createElement("option");
+      option.value = cat.cate_id;
+      option.textContent = `${cat.cate_name} (ID: ${cat.cate_id})`;
+      select.appendChild(option);
+    });
+
     /**
      * 載入搜尋商品列表
      */
@@ -115,16 +131,11 @@ export default async function init() {
     // 取得產品資料
     const products = await fetchProducts();
 
-    // 生成包含product物件的Array
-    const productsArray = generateProductsList(products);
-
-    // currentPage = 1;
-
     /**
      * 廣播按鈕點擊按鍵
      */
 
-    // 假設你透過 API 取得了新的總頁數
+    // 新的總頁數
     const newTotalPagesFromAPI = Math.floor(products.length / 6) + 1;
 
     // 建立一個自訂事件
@@ -146,6 +157,8 @@ export default async function init() {
 
     // 在 window 上廣播這個事件
     window.dispatchEvent(event2);
+
+    document.getElementById("new-prod-btn").addEventListener("click", newProd);
   } catch (error) {
     //初始化頁面錯誤處理
     console.error("初始化商品頁面時發生錯誤:", error);
