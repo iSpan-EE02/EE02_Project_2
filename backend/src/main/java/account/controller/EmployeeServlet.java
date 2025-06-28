@@ -30,15 +30,15 @@ public class EmployeeServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		EmployeeDAO dao = new EmployeeDAO();
 
-		if ("logout".equals(action)) {
-			HttpSession session = request.getSession(false);
-			if (session != null) {
-				session.invalidate();
-			}
-			request.setAttribute("message", "已成功登出");
-			response.sendRedirect(request.getContextPath() + "/jsp/employee/login.jsp");
-			return;
-		} else if ("delete".equals(action)) {
+//		if ("logout".equals(action)) {
+//			HttpSession session = request.getSession(false);
+//			if (session != null) {
+//				session.invalidate();
+//			}
+//			request.setAttribute("message", "已成功登出");
+//			response.sendRedirect(request.getContextPath() + "/jsp/employee/login.jsp");
+//			return;}
+		 if ("delete".equals(action)) {
 			int id = Integer.parseInt(request.getParameter("id"));
 			dao.delete(id);
 			response.sendRedirect("EmployeeServlet?action=list");
