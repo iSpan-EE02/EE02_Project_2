@@ -17,7 +17,7 @@ import { generateCodeFromInteger } from "./rand-str.js"; //產生貨號的前置
 /**
  * @description 引入連接後端的模塊
  */
-import { fetchCategories, fetchProducts } from "./api-client.js";
+import { fetchCategoriesProd, fetchProducts } from "./api-client.js";
 
 // 將扁平的分類陣列轉換為樹狀結構
 function buildCategoryTree(list) {
@@ -42,18 +42,32 @@ function generateTreeHTML(nodes) {
   let html = "<ul>";
   for (const node of nodes) {
     const isParent = node.is_parent;
-    // 【修改 1】: 在 li 標籤中，透過 data-is-parent 屬性儲存它是否為父分類的資訊
-    html += `<li data-id="${node.cate_id}" 
-                     data-name="${node.cate_name}" 
-                     data-desc="${node.cate_desc}" 
-                     data-parent-id="${node.parent_cate_id || 0}"
-                     data-is-parent="${isParent}">
-                     <a href="#">
-                         <i class="bi ${
-                           isParent ? "bi-caret-down-fill" : "bi-dash"
-                         }"></i>
-                         <b>${node.cate_name}</b>
-                     </a>`;
+    if (isParent == 0) {
+      html += `<li data-id="${node.cate_id}" 
+                       data-name="${node.cate_name}" 
+                       data-desc="${node.cate_desc}" 
+                       data-parent-id="${node.parent_cate_id || 0}"
+                       data-is-parent="${isParent}">
+                       <a href="#">
+                           <i class="bi ${
+                             isParent ? "bi-caret-down-fill" : "bi-dash"
+                           }"></i>
+                           <b>${node.cate_name}</b>
+                       </a>`;
+    } else {
+      html += `<li data-id="${node.cate_id}" 
+                       data-name="${node.cate_name}" 
+                       data-desc="${node.cate_desc}" 
+                       data-parent-id="${node.parent_cate_id || 0}"
+                       data-is-parent="${isParent}">
+                       <span>
+                           <i class="bi ${
+                             isParent ? "bi-caret-down-fill" : "bi-dash"
+                           }"></i>
+                           <b>${node.cate_name}</b>
+                       </span>`;
+    }
+    //  在 li 標籤中，透過 data-is-parent 屬性儲存它是否為父分類的資訊
     if (isParent) {
       html += generateTreeHTML(node.children);
     }
@@ -68,20 +82,32 @@ function generateTreeHTML(nodes) {
  * @param {*} id
  * @param {*} name
  */
-function cateEditFilter(id, name) {
-  document.getElementById("cate-filter").setAttribute("data-id", id);
-  document.getElementById("cate-filter").value = name;
+function cateEditFilter(id, name, isParent) {
+  if (isParent == "false") {
+    document.getElementById("prod-cate-id").value = id;
+    document.getElementById("cate-filter").value = name;
+  }
+}
+
+function setCateDefault() {
+  document.getElementById("prod-cate-id").value = "";
+  document.getElementById("cate-filter").value = "全部類別";
 }
 
 function newProd() {
   console.log("新增商品");
   document.getElementById("product-edit-head").innerText = "新增商品";
-  document.querySelector("input[name = 'prod-name']").value = "";
-  document.querySelector("select[name = 'prod-cate-select']").value = 0;
-  document.getElementById("statusOn").checked = true;
-  document.querySelector("textarea[name = 'prod-desc']").value = "";
+  resetEditForm();
   imgEdit();
   skuEdit("new");
+}
+
+function prodItemEdit() {
+  console.log("編輯商品");
+  document.getElementById("product-edit-head").innerText = "編輯商品";
+  // resetEditForm();
+  // imgEdit();
+  // skuEdit("new");
 }
 
 function imgEdit() {
@@ -229,6 +255,65 @@ function mergeProductWithCategoryName(products, categories) {
 }
 
 /**
+ * 搜尋商品事件
+ */
+
+async function searchProd(event) {
+  event.preventDefault();
+
+  //取得表單資料
+  const form = event.target;
+  const formData = new FormData(form);
+  const prodData = Object.fromEntries(formData.entries());
+  if (prodData["prod-cate-id"] === "null" || prodData["prod-cate-id"] === "") {
+    prodData["prod-cate-id"] = null; // 轉換為真正的 null
+  }
+  if (prodData["prod-status"] === "null" || prodData["prod-status"] === "") {
+    prodData["prod-status"] = null; // 轉換為真正的 null
+  }
+  try {
+    //呼叫查詢API
+    const newProducts = await fetchProducts(prodData);
+    const newCategories = await fetchCategoriesProd();
+    const newProductsAndCate = mergeProductWithCategoryName(
+      newProducts,
+      newCategories
+    );
+
+    // 建立一個自訂事件
+    const event3 = new CustomEvent("update-products", {
+      detail: {
+        paginatedProducts: newProductsAndCate,
+      },
+    });
+
+    // 在 window 上廣播這個事件
+    window.dispatchEvent(event3);
+
+    window.alert("搜尋資料成功");
+  } catch (error) {
+    console.log("搜尋資料失敗");
+    console.log("錯誤訊息" + error.message);
+    window.alert("搜尋失敗" + error.message);
+  }
+}
+
+/**
+ * reset 編輯表單
+ */
+
+function resetEditForm() {
+  const prodEditForm = document.getElementById("product-edit-form");
+  prodEditForm.reset();
+
+  const imageContainer = document.getElementById("imageContainer");
+  imageContainer.innerHTML = "";
+
+  const skuTbody = document.getElementById("sku-tbody");
+  skuTbody.innerHTML = "";
+}
+
+/**
  * 初始化頁面
  * export default => 會在第一次載入時執行一次
  * @description 取得資料、建立 DOM 並綁定事件
@@ -240,7 +325,9 @@ export default async function init() {
      */
 
     // 取得分類資料
-    const categories = await fetchCategories();
+    const categories = await fetchCategoriesProd();
+
+    console.log(categories);
 
     // 使用資料建立樹狀結構
     const treeData = buildCategoryTree(categories);
@@ -256,23 +343,25 @@ export default async function init() {
     container.addEventListener("click", function (event) {
       event.preventDefault();
       const targetLi = event.target.closest("li");
-      if (targetLi) {
+      if (targetLi.dataset) {
         // 從 li 元素中的 dataset 中讀取分類資訊
-        const { id, name } = targetLi.dataset;
+        const { id, name, isParent } = targetLi.dataset;
         // 填充右側查詢表單
-        cateEditFilter(id, name);
+        cateEditFilter(id, name, isParent);
       }
     });
 
     // 生成編輯表單中父分類的下拉選單
     const select = document.querySelector("select[name = 'prod-cate-select']");
-    select.innerHTML = '<option value="0">（此為頂層分類）</option>';
+    select.innerHTML = '<option value="0" disabled>預設分類（不可選）</option>';
     // 為每個類別生成option並append到select之下
     categories.forEach((cat) => {
-      const option = document.createElement("option");
-      option.value = cat.cate_id;
-      option.textContent = `${cat.cate_name} (ID: ${cat.cate_id})`;
-      select.appendChild(option);
+      if (!cat.is_parent) {
+        const option = document.createElement("option");
+        option.value = cat.cate_id;
+        option.textContent = `${cat.cate_name} (ID: ${cat.cate_id})`;
+        select.appendChild(option);
+      }
     });
 
     /**
@@ -318,8 +407,13 @@ export default async function init() {
 
     // 在 window 上廣播這個事件
     window.dispatchEvent(event2);
-
+    document
+      .getElementById("clear-cate-btn")
+      .addEventListener("click", setCateDefault);
     document.getElementById("new-prod-btn").addEventListener("click", newProd);
+    document
+      .getElementById("search-prod-form")
+      .addEventListener("submit", searchProd);
   } catch (error) {
     //初始化頁面錯誤處理
     console.error("初始化商品頁面時發生錯誤:", error);

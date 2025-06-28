@@ -7,30 +7,28 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import product.bean.ProdBean;
+
 import product.bean.ProdCateBean;
 import product.dao.ProdCateDao;
-import product.dao.ProdDao;
 import product.util.GsonUtils;
 
 
 /**
  * Servlet implementation class DaoQueryAll
  */
-@WebServlet("/ProdQueryAll")
-public class ProdQueryAll extends HttpServlet {
+@WebServlet("/ProdCateQueryAllProd")
+public class ProdCateQueryAllProd extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProdQueryAll() {
+    public ProdCateQueryAllProd() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,27 +39,19 @@ public class ProdQueryAll extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		String jsonRequest = new String(request.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-		System.out.println(jsonRequest);
-		ProdBean prodBean = GsonUtils.fromJson(jsonRequest, ProdBean.class);
-		
 		// 準備一個 Map 來存放最終要回傳的 JSON 物件的結構
 		HashMap<String, Object> responseData = new HashMap<>();
-		List<ProdBean> prodList = null;
-		ProdDao prodDao = new ProdDao();
-//		ProdBean prodBean = new ProdBean();
+		List<ProdCateBean> prodCateList = null;
+		ProdCateDao prodCateDao = new ProdCateDao();		
 		try {
 			// 1. 取得列表
-			if(prodBean==null) {
-				prodBean = new ProdBean();
-			}
-			prodList =  prodDao.queryAll(prodBean);
+			prodCateList =  prodCateDao.queryAllProd();
 			
 			// 2. 準備成功時的回應資料
 			responseData.put("status", "success");
-			responseData.put("message", String.format("成功查詢到 %d 筆資料。", prodList.size()));
-			responseData.put("itemCount", prodList.size());
-			responseData.put("data", prodList);
+			responseData.put("message", String.format("成功查詢到 %d 筆資料。", prodCateList.size()));
+			responseData.put("itemCount", prodCateList.size());
+			responseData.put("data", prodCateList);
 		} catch (Exception e) {
 			 // 3. 如果在過程中發生任何錯誤 (例如資料庫連線失敗)
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 設定 HTTP 狀態碼為 500

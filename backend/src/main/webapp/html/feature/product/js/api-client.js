@@ -7,6 +7,7 @@
 const PROD_CATE_UPSERT = "/Project2/ProdCateSave";
 const PROD_CATE_DELETE = "/Project2/ProdCateDelete";
 const PROD_CATE_QUERY = "/Project2/ProdCateQueryAll";
+const PROD_CATE_QUERY_PROD = "/Project2/ProdCateQueryAllProd";
 const PROD_QUERY = "/Project2/ProdQueryAll";
 
 /**
@@ -19,6 +20,37 @@ export async function fetchCategories() {
 
   try {
     const response = await fetch(PROD_CATE_QUERY);
+
+    // 檢查 HTTP 回應狀態碼是否成功 (在 200-299 範圍內)
+    if (!response.ok) {
+      // 如果伺服器回應錯誤 (如 404 Not Found, 500 Internal Server Error), 拋出錯誤
+      throw new Error(`伺服器錯誤！狀態碼: ${response.status}`);
+    }
+
+    // 解析 JSON 格式的回應主體
+    const result = await response.json();
+
+    // 根據您後端回傳的 JSON 結構，檢查業務邏輯是否真的成功
+    if (result && result.status === "success" && Array.isArray(result.data)) {
+      console.log("成功取得並解析資料！");
+      return result.data; // 只回傳最重要的 data 陣列
+    } else {
+      // 如果 JSON 格式不對或 status 不是 success，拋出一個帶有後端訊息的錯誤
+      throw new Error(result.message || "從伺服器回傳的資料格式不正確");
+    }
+  } catch (error) {
+    // 捕獲網路連線錯誤 (如無法連線到伺服器) 或上面拋出的所有錯誤
+    console.error("取得分類資料時發生錯誤:", error);
+    // 將錯誤再次拋出，這樣呼叫此函式的程式碼 (categories.js) 才能捕獲到它並在介面上顯示錯誤訊息
+    throw error;
+  }
+}
+
+export async function fetchCategoriesProd() {
+  console.log(`正在從 ${PROD_CATE_QUERY_PROD} 取得分類資料...`);
+
+  try {
+    const response = await fetch(PROD_CATE_QUERY_PROD);
 
     // 檢查 HTTP 回應狀態碼是否成功 (在 200-299 範圍內)
     if (!response.ok) {
@@ -116,14 +148,23 @@ export async function deleteCategory(categoryId) {
 
 /**
  * 從後端非同步取得所有產品資料
+ * @param {object} product
  * @returns {Promise<Array>} 回傳一個包含所有產品物件的 Promise
  */
 
-export async function fetchProducts() {
+export async function fetchProducts(productData = {}) {
   console.log(`正在從 ${PROD_QUERY} 取得分類資料...`);
 
   try {
-    const response = await fetch(PROD_QUERY);
+    const response = await fetch(PROD_QUERY, {
+      method: "POST", // 使用 POST 方法來傳送資料
+      headers: {
+        // 必須設定這個標頭，告訴後端我們傳送的是 JSON 格式的資料
+        "Content-Type": "application/json",
+      },
+      // 將 JavaScript 物件轉換為 JSON 字串後，放在請求的主體 (body) 中
+      body: JSON.stringify(productData),
+    });
 
     // 檢查 HTTP 回應狀態碼是否成功 (在 200-299 範圍內)
     if (!response.ok) {

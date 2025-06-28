@@ -2,8 +2,8 @@ package product.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-
 
 
 import org.apache.commons.dbutils.DbUtils;
@@ -33,18 +33,6 @@ public class ProdDao {
 //			+ "CATE_DESC = ?,\r\n"
 //			+ "PARENT_CATE_ID = ? WHERE CATE_ID = ?";
 	
-	private static final String sqlQueryAll = 
-	"SELECT\r\n"
-	+ "    p.PROD_ID,\r\n"
-	+ "    p.PROD_NAME,\r\n"
-	+ "    p.PROD_DESC,\r\n"
-	+ "    p.PROD_CATE_ID,\r\n"
-	+ "    p.PROD_STATUS,\r\n"
-	+ "    pi.IMAGE_URL\r\n"
-	+ "FROM\r\n"
-	+ "    PRODUCT AS p\r\n"
-	+ "LEFT JOIN\r\n"
-	+ "    PRODUCT_IMAGES AS pi ON p.PROD_ID = pi.PROD_ID AND pi.IS_PRIMARY = 1";
 
 	
 	
@@ -124,13 +112,46 @@ public class ProdDao {
 	 * This is a query All DAO method of ProdBean
 	 * 
 	 */
-	public List<ProdBean> queryAll() throws SQLException {
+	public List<ProdBean> queryAll(ProdBean prodBean) throws SQLException {
+		StringBuilder sqlQueryAll = new StringBuilder(			
+				"SELECT\r\n"
+						+ "    p.PROD_ID,\r\n"
+						+ "    p.PROD_NAME,\r\n"
+						+ "    p.PROD_DESC,\r\n"
+						+ "    p.PROD_CATE_ID,\r\n"
+						+ "    p.PROD_STATUS,\r\n"
+						+ "    pi.IMAGE_URL\r\n"
+						+ "FROM\r\n"
+						+ "    PRODUCT AS p\r\n"
+						+ "LEFT JOIN\r\n"
+						+ "    PRODUCT_IMAGES AS pi ON p.PROD_ID = pi.PROD_ID AND pi.IS_PRIMARY = 1 WHERE 1=1"
+				);
+		
 		QueryRunner queryRunner = new QueryRunner();
+		List<Object> params = new ArrayList<>();
 		BeanListHandler<ProdBean> beanListHandler = new BeanListHandler<>(ProdBean.class);
 		Connection conn = null;
+		
+
+		if(prodBean.getProd_name()!=null && !prodBean.getProd_name().isEmpty()) {
+			 sqlQueryAll.append(" AND p.prod_name LIKE ?");
+	         params.add("%" + prodBean.getProd_name() + "%");
+		}
+		
+		if(prodBean.getProd_status()!=null) {
+			 sqlQueryAll.append(" AND p.prod_status = ?");
+	         params.add(prodBean.getProd_status());
+		}
+		
+		if(prodBean.getProd_cate_id()!=null) {
+			 sqlQueryAll.append(" AND p.prod_cate_id = ?");
+	         params.add(prodBean.getProd_cate_id());
+		}
+		
+		
 		try {
 			conn = JDBCutil.getConnection();
-			return queryRunner.query(conn, sqlQueryAll, beanListHandler);
+			return queryRunner.query(conn, sqlQueryAll.toString(), beanListHandler, params.toArray());
 		}finally {
 			DbUtils.closeQuietly(conn);
 		}

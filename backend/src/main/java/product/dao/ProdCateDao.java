@@ -59,6 +59,28 @@ public class ProdCateDao {
 	+ "    product_category c1\r\n"
 	+ "ORDER BY \r\n"
 	+ "    c1.cate_id";
+	
+	private static final String sqlQueryAllForProd = 
+	"SELECT \r\n"
+	+ "    c1.cate_id,\r\n"
+	+ "    c1.cate_name,\r\n"
+	+ "    c1.cate_desc,\r\n"
+	+ "    c1.parent_cate_id,\r\n"
+	+ "    CASE \r\n"
+	+ "        WHEN \r\n"
+	+ "            -- 條件一：是否存在子類別\r\n"
+	+ "            EXISTS (\r\n"
+	+ "                SELECT 1 \r\n"
+	+ "                FROM product_category c2 \r\n"
+	+ "                WHERE c2.parent_cate_id = c1.cate_id\r\n"
+	+ "            ) \r\n"
+	+ "        THEN 1 \r\n"
+	+ "        ELSE 0 \r\n"
+	+ "    END AS is_parent\r\n"
+	+ "FROM \r\n"
+	+ "    product_category c1\r\n"
+	+ "ORDER BY \r\n"
+	+ "    c1.cate_id";
 
 
 	
@@ -146,6 +168,19 @@ public class ProdCateDao {
 		try {
 			conn = JDBCutil.getConnection();
 			return queryRunner.query(conn, sqlQueryAll, beanListHandler);
+		}finally {
+			DbUtils.closeQuietly(conn);
+		}
+
+	}
+	
+	public List<ProdCateBean> queryAllProd() throws SQLException {
+		QueryRunner queryRunner = new QueryRunner();
+		BeanListHandler<ProdCateBean> beanListHandler = new BeanListHandler<>(ProdCateBean.class);
+		Connection conn = null;
+		try {
+			conn = JDBCutil.getConnection();
+			return queryRunner.query(conn, sqlQueryAllForProd, beanListHandler);
 		}finally {
 			DbUtils.closeQuietly(conn);
 		}

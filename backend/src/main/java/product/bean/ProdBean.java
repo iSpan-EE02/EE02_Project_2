@@ -2,12 +2,17 @@ package product.bean;
 
 import java.time.LocalDateTime;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ProdBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer prod_id;
+	@SerializedName(value = "prod_name", alternate = {"prod-name"})
 	private String prod_name;
 	private String prod_desc;
+	@SerializedName(value = "prod_cate_id", alternate = {"prod-cate-id"})
 	private Integer prod_cate_id;
+	@SerializedName(value = "prod_status", alternate = {"prod-status"})
 	private Integer prod_status;
 	private LocalDateTime create_at;
 	private String image_url;
