@@ -51,6 +51,7 @@
                                     <th>圖片</th>
                                     <th>商品ID</th>
                                     <th>商品名稱</th>
+                                    <th>分類</th>
                                     <th>狀態</th>
                                     <th>操作</th>
                                 </tr>
@@ -75,7 +76,16 @@
 
                                         <td x-text="product.prod_id"></td>
                                         <td x-text="product.prod_name"></td>
-                                        <td x-text="product.prod_status"></td>
+                                        <td x-text="product.cate_name"></td>
+                                        <td>
+                                            <template x-if="product.prod_status == 1">
+                                                <span class="badge bg-success">上架中</span>
+                                            </template>
+                                            <template x-if="product.prod_status == 0">
+                                                <span class="badge bg-secondary">已下架</span>
+                                            </template>
+                                        </td>
+                                        <!-- <td x-text="product.prod_status"></td> -->
                                         <!-- <td><span class="badge bg-success">上架中</span></td> -->
                                         <td>
                                             <a href="#" @click="newVisible = !newVisible"
@@ -117,109 +127,108 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
     <!-- 商品新增/編輯頁面 (預設隱藏) -->
     <div id="product-edit" class="main-content active" x-show="newVisible">
         <h1 class="h2" id="product-edit-head">編輯商品</h1>
         <hr>
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5><i class="bi bi-info-circle-fill"></i> 商品基本資料 (Product)</h5>
-            </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label">商品名稱</label>
-                    <input type="text" class="form-control" placeholder="EX:經典純棉素色T恤" name="prod-name">
+        <form action="">
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i class="bi bi-info-circle-fill"></i> 商品基本資料 (Product)</h5>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">商品分類</label>
-                    <select class="form-select" name="prod-cate-select">
-                        <option>default</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">商品狀態</label>
-                    <div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="prodStatus" id="statusOn" checked="">
-                            <label class="form-check-label" for="statusOn">上架</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="prodStatus" id="statusOff">
-                            <label class="form-check-label" for="statusOff">下架</label>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">商品名稱</label>
+                        <input type="text" class="form-control" placeholder="EX:經典純棉素色T恤" name="prod-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">商品分類</label>
+                        <select class="form-select" name="prod-cate-select">
+                            <option>default</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">商品狀態</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="prodStatus" id="statusOn" checked="">
+                                <label class="form-check-label" for="statusOn">上架</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="prodStatus" id="statusOff">
+                                <label class="form-check-label" for="statusOff">下架</label>
+                            </div>
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">商品描述</label>
+                        <textarea class="form-control" rows="5" name="prod-desc"
+                            placeholder="EX:採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。" required></textarea>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">商品描述</label>
-                    <textarea class="form-control" rows="5" name="prod-desc"
-                        placeholder="EX:採用100%頂級純棉，觸感柔軟舒適，是衣櫃中不可或缺的百搭單品。"></textarea>
+            </div>
+
+
+            <!-- 商品圖片 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-tags-fill"></i> 商品圖片上傳管理</h5>
+                </div>
+                <div class="card-body">
+
+                    <!-- 圖片容器 -->
+                    <div id="imageContainer"
+                        style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 1.5rem;">
+                        <!-- 這裏會動態填充圖片 -->
+                    </div>
+
+                    <button id="addImageBtn" class="btn btn-sm btn-outline-success">
+                        <i class="bi bi-plus"></i>新增一個圖片欄位
+                    </button>
                 </div>
             </div>
-        </div>
 
-
-        <!-- 商品圖片 -->
-        <div class="card">
-            <div class="card-header">
-                <h5><i class="bi bi-tags-fill"></i> 商品圖片上傳管理</h5>
-            </div>
-            <div class="card-body">
-                <div>
-                    <img src="https://placehold.co/60x60/CCCCCC/FFFFFF?text=IMG" alt="product image" width="40">
-                    <input type="file" name="img1" id="">
+            <!-- 商品款式 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-tags-fill"></i> 商品款式與庫存 (SKU)</h5>
                 </div>
-
-                <button class="btn btn-sm btn-outline-success"><i class="bi bi-plus"></i> 手動新增一筆圖片</button>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>SKU 貨號（貨號前綴會自動產生）</th>
+                                <th>價格</th>
+                                <th>庫存</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sku-tbody">
+                            <!-- 這裏會動態填充sku -->
+                        </tbody>
+                    </table>
+                    <button class="btn btn-sm btn-outline-success" id="add-sku-btn"><i class="bi bi-plus"></i> 手動新增一筆
+                        SKU</button>
+                </div>
             </div>
-        </div>
 
-        <!-- 商品款式 -->
-        <div class="card">
-            <div class="card-header">
-                <h5><i class="bi bi-tags-fill"></i> 商品款式與庫存 (SKU)</h5>
+            <div class="mt-4 text-end">
+                <button class="btn btn-secondary" @click="newVisible = !newVisible">取消</button>
+                <button class="btn btn-primary btn-lg" type="submit">儲存所有變更</button>
             </div>
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>SKU 貨號</th>
-                            <th>價格</th>
-                            <th>庫存</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="text" class="form-control" value="CCT-WHI-M"></td>
-                            <td><input type="number" class="form-control" value="499.00"></td>
-                            <td><input type="number" class="form-control" value="150"></td>
-                            <td><button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" class="form-control" value="CCT-WHI-L"></td>
-                            <td><input type="number" class="form-control" value="499.00"></td>
-                            <td><input type="number" class="form-control" value="120"></td>
-                            <td><button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" class="form-control" value="CCT-BLK-M"></td>
-                            <td><input type="number" class="form-control" value="499.00"></td>
-                            <td><input type="number" class="form-control" value="180"></td>
-                            <td><button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button class="btn btn-sm btn-outline-success"><i class="bi bi-plus"></i> 手動新增一筆 SKU</button>
-            </div>
-        </div>
-
-        <div class="mt-4 text-end">
-            <button class="btn btn-secondary" @click="newVisible = !newVisible">取消</button>
-            <button class="btn btn-primary btn-lg">儲存所有變更</button>
-        </div>
+        </form>
 
     </div>
 

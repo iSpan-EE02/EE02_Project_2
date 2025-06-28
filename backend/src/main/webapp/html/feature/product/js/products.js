@@ -4,6 +4,11 @@
  */
 
 /**
+ * 全域變量
+ */
+let maxId = 0;
+
+/**
  * @description 引入根據ID產生貨號的模塊
  */
 import { generateCodeFromInteger } from "./rand-str.js"; //產生貨號的前置
@@ -47,7 +52,7 @@ function generateTreeHTML(nodes) {
                          <i class="bi ${
                            isParent ? "bi-caret-down-fill" : "bi-dash"
                          }"></i>
-                         <b>${node.cate_name}</b> (ID1: ${node.cate_id})
+                         <b>${node.cate_name}</b>
                      </a>`;
     if (isParent) {
       html += generateTreeHTML(node.children);
@@ -75,6 +80,152 @@ function newProd() {
   document.querySelector("select[name = 'prod-cate-select']").value = 0;
   document.getElementById("statusOn").checked = true;
   document.querySelector("textarea[name = 'prod-desc']").value = "";
+  imgEdit();
+  skuEdit("new");
+}
+
+function imgEdit() {
+  const addImageBtn = document.getElementById("addImageBtn");
+  const imageContainer = document.getElementById("imageContainer");
+
+  /**
+   * 建立一個新的圖片卡片的 HTML 字串 (使用全行內樣式)
+   * @returns {string} HTML string
+   */
+  const createNewImageCard = () => {
+    // 使用時間戳和隨機數確保 ID 的唯一性
+    const uniqueId = `file-input-${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(2, 9)}`;
+    const placeholderImg =
+      "https://placehold.co/200x200/6c757d/white?text=點我上傳";
+
+    return `
+                <div data-role="image-card" style="position: relative; width: 200px; height: 200px; margin: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s ease-in-out; transform: none;">
+                    <!-- 刪除按鈕，使用 data-action 屬性供 JS 選取 -->
+                    <button type="button" data-action="delete" aria-label="刪除此圖片" style="position: absolute; top: -10px; right: -10px; z-index: 10; border-radius: 50%; width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.2); background-color: #dc3545; border: 1px solid #dc3545; color: #fff; line-height: 1.5; text-align: center; cursor: pointer;">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                    
+                    <!-- 圖片 Label -->
+                    <label for="${uniqueId}" style="cursor: pointer; display: block; width: 100%; height: 100%;">
+                        <img src="${placeholderImg}" data-role="preview-img" alt="圖片預覽" 
+                             style="width: 100%; height: 100%; object-fit: cover; border-radius: 0.375rem; border: 3px solid white; background-color: #e9ecef;"
+                             onerror="this.onerror=null; this.src='https://placehold.co/200x200/dc3545/white?text=圖片載入失敗';">
+                    </label>
+                    
+                    <!-- 隱藏的檔案上傳 input，使用 data-role 屬性供 JS 選取 -->
+                    <input type="file" accept="image/*" id="${uniqueId}" data-role="file-input" style="display: none;" name="prod-img">
+                </div>
+            `;
+  };
+
+  // 監聽 "新增圖片" 按鈕的點擊事件
+  addImageBtn.addEventListener("click", () => {
+    imageContainer.insertAdjacentHTML("beforeend", createNewImageCard());
+  });
+
+  // --- 使用事件委派 (Event Delegation) 處理動態新增的元素 ---
+
+  // 監聽容器內的點擊事件 (用於刪除)
+  imageContainer.addEventListener("click", (event) => {
+    // 透過 .closest() 和 data-action 屬性判斷點擊的是否為刪除按鈕
+    const deleteButton = event.target.closest('[data-action="delete"]');
+    if (deleteButton) {
+      // 如果是，則找到最近的卡片父元素並將其從 DOM 中移除
+      deleteButton.closest('[data-role="image-card"]').remove();
+    }
+  });
+
+  // 監聽容器內的 change 事件 (用於檔案選擇)
+  imageContainer.addEventListener("change", (event) => {
+    // 透過 .matches() 和 data-role 屬性判斷觸發事件的是否為檔案輸入框
+    if (event.target.matches('[data-role="file-input"]')) {
+      const fileInput = event.target;
+      const file = fileInput.files[0];
+
+      if (file) {
+        // 找到該卡片內的 img 元素來顯示預覽
+        const previewImage = fileInput
+          .closest('[data-role="image-card"]')
+          .querySelector('[data-role="preview-img"]');
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  });
+}
+
+function skuEdit(type) {
+  const addSkuBtn = document.getElementById("add-sku-btn");
+  const skuTbody = document.getElementById("sku-tbody");
+  let skuItemPrefix = "XXXX-";
+  if (type == "new") {
+    skuItemPrefix = generateCodeFromInteger(maxId + 1) + "-";
+  } else {
+    skuItemPrefix = "XXXX-";
+  }
+  let skuCount = skuTbody.childElementCount;
+
+  const createNewSku = () => {
+    // 使用時間戳和隨機數確保 ID 的唯一性
+    skuCount = skuTbody.childElementCount;
+    return `
+              <tr data-role="sku-card">
+                  <td>
+                  <div class="input-group">
+                  <span class="input-group-text">${skuItemPrefix}</span>
+                  <input type="text" class="form-control" value="" placeholder="WHI-M" name="sku-item-number[${skuCount}]" required></td>
+                  </div>
+                  <td><input type="number" class="form-control" value="" placeholder="499" name="sku-item-price[${skuCount}]" required></td>
+                  <td><input type="number" class="form-control" value="" placeholder="150" name="sku-item-stock[${skuCount}]" required></td>
+                  <td><button class="btn btn-sm btn-outline-danger" data-action="delete"><i class="bi bi-x-circle"></i></button>
+                  </td>
+              </tr>
+            `;
+  };
+
+  // 監聽 "新增sku" 按鈕的點擊事件
+  addSkuBtn.addEventListener("click", () => {
+    skuTbody.insertAdjacentHTML("beforeend", createNewSku());
+  });
+
+  // --- 使用事件委派 (Event Delegation) 處理動態新增的元素 ---
+
+  // 監聽tbody內的點擊事件 (用於刪除)
+  skuTbody.addEventListener("click", (event) => {
+    // 透過 .closest() 和 data-action 屬性判斷點擊的是否為刪除按鈕
+    const deleteButton = event.target.closest('[data-action="delete"]');
+    if (deleteButton) {
+      // 如果是，則找到最近的卡片父元素並將其從 DOM 中移除
+      deleteButton.closest('[data-role="sku-card"]').remove();
+    }
+  });
+}
+
+/**
+ * 將產品資料與分類資料合併的函式
+ * @param {Array} products 產品陣列
+ * @param {Array} categories 分類陣列
+ * @returns {Array} 回傳已合併分類名稱的產品陣列
+ */
+function mergeProductWithCategoryName(products, categories) {
+  // 1. 建立一個分類的查找表 (Lookup Table)，這裡使用 Map 物件
+  const categoryMap = new Map(
+    categories.map((category) => [category.cate_id, category.cate_name])
+  );
+
+  // 2. 遍歷產品陣列，並為每個產品加上 cate_name 屬性
+  return products.map((product) => {
+    return {
+      ...product, // 使用展開運算子保留原始產品所有屬性
+      cate_name: categoryMap.get(product.prod_cate_id) || "未分類", // 透過 Map 快速查找，如果找不到則給予預設值
+    };
+  });
 }
 
 /**
@@ -131,6 +282,16 @@ export default async function init() {
     // 取得產品資料
     const products = await fetchProducts();
 
+    const productsAndCate = mergeProductWithCategoryName(products, categories);
+
+    console.log(productsAndCate);
+
+    // 使用 map 取得所有 prod_id 的陣列
+    const allIds = products.map((product) => product.prod_id);
+
+    // 使用 Math.max 和展開運算子 (...) 找到最大值
+    maxId = Math.max(...allIds);
+
     /**
      * 廣播按鈕點擊按鍵
      */
@@ -151,7 +312,7 @@ export default async function init() {
     // 建立一個自訂事件
     const event2 = new CustomEvent("update-products", {
       detail: {
-        paginatedProducts: products,
+        paginatedProducts: productsAndCate,
       },
     });
 
