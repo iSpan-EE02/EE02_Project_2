@@ -21,6 +21,8 @@ import {
   fetchCategoriesProd,
   fetchProducts,
   saveProduct,
+  fetchImage,
+  fetchSku,
 } from "./api-client.js";
 
 // 將扁平的分類陣列轉換為樹狀結構
@@ -102,7 +104,7 @@ function newProd() {
   console.log("新增商品");
   document.getElementById("product-edit-head").innerText = "新增商品";
   resetEditForm();
-  imgEdit();
+  imgEdit("new");
   skuEdit("new");
 }
 
@@ -133,16 +135,19 @@ window.editProduct = async function (product) {
     default:
       break;
   }
+  const newProducts = await fetchImage(product["prod_id"]);
+  const newSkus = await fetchSku(product["prod_id"]);
 
-  imgEdit();
-  skuEdit("edit", product["prod_id"]);
+  // console.log(newProducts);
 
   // 載入圖片
+  imgEdit("edit", newProducts);
+  skuEdit("edit", product["prod_id"], newSkus);
 
   // 載入SKU
 };
 
-function imgEdit() {
+function imgEdit(type, arr = []) {
   const addImageBtn = document.getElementById("addImageBtn");
   const imageContainer = document.getElementById("imageContainer");
 
@@ -150,13 +155,15 @@ function imgEdit() {
    * 建立一個新的圖片卡片的 HTML 字串 (使用全行內樣式)
    * @returns {string} HTML string
    */
-  const createNewImageCard = () => {
+  const createNewImageCard = (
+    imgSrc = "https://placehold.co/200x200/6c757d/white?text=點我上傳"
+  ) => {
     // 使用時間戳和隨機數確保 ID 的唯一性
     const uniqueId = `file-input-${Date.now()}-${Math.random()
       .toString(36)
       .substring(2, 9)}`;
     const placeholderImg =
-      "https://placehold.co/200x200/6c757d/white?text=點我上傳";
+      "https://placehold.co/200x200/dc3545/white?text=圖片載入失敗";
 
     return `
                 <div data-role="image-card" style="position: relative; width: 200px; height: 200px; margin: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s ease-in-out; transform: none;">
@@ -167,9 +174,9 @@ function imgEdit() {
                     
                     <!-- 圖片 Label -->
                     <label for="${uniqueId}" style="cursor: pointer; display: block; width: 100%; height: 100%;">
-                        <img src="${placeholderImg}" data-role="preview-img" alt="圖片預覽" 
+                        <img src="${imgSrc}" data-role="preview-img" alt="圖片預覽" 
                              style="width: 100%; height: 100%; object-fit: cover; border-radius: 0.375rem; border: 3px solid white; background-color: #e9ecef;"
-                             onerror="this.onerror=null; this.src='https://placehold.co/200x200/dc3545/white?text=圖片載入失敗';">
+                             onerror="this.onerror=null; this.src=${placeholderImg};">
                     </label>
                     
                     <!-- 隱藏的檔案上傳 input，使用 data-role 屬性供 JS 選取 -->
@@ -177,6 +184,16 @@ function imgEdit() {
                 </div>
             `;
   };
+
+  if (type == "edit") {
+    arr.forEach(function (product, index) {
+      console.log(product.image_url);
+      imageContainer.insertAdjacentHTML(
+        "beforeend",
+        createNewImageCard(product.image_url)
+      );
+    });
+  }
 
   // 監聽 "新增圖片" 按鈕的點擊事件
   addImageBtn.addEventListener("click", () => {
@@ -218,7 +235,7 @@ function imgEdit() {
   });
 }
 
-function skuEdit(type, id = 1) {
+function skuEdit(type, id = 1, arr = []) {
   const addSkuBtn = document.getElementById("add-sku-btn");
   const skuTbody = document.getElementById("sku-tbody");
   let skuItemPrefix = "XXXX-";
@@ -229,7 +246,7 @@ function skuEdit(type, id = 1) {
   }
   let skuCount = skuTbody.childElementCount;
 
-  const createNewSku = () => {
+  const createNewSku = (code = "", price = 0, stock = 0) => {
     // 使用時間戳和隨機數確保 ID 的唯一性
     skuCount = skuTbody.childElementCount;
     return `
@@ -237,15 +254,25 @@ function skuEdit(type, id = 1) {
                   <td>
                   <div class="input-group">
                   <span class="input-group-text">${skuItemPrefix}</span>
-                  <input type="text" class="form-control" value="" placeholder="WHI-M" name="sku-item-number[${skuCount}]" required></td>
+                  <input type="text" class="form-control" value="${code}" placeholder="WHI-M" name="sku-item-code[${skuCount}]" required></td>
                   </div>
-                  <td><input type="number" class="form-control" value="" placeholder="499" name="sku-item-price[${skuCount}]" required></td>
-                  <td><input type="number" class="form-control" value="" placeholder="150" name="sku-item-stock[${skuCount}]" required></td>
+                  <td><input type="number" class="form-control" value="${price}" placeholder="499" name="sku-item-price[${skuCount}]" required></td>
+                  <td><input type="number" class="form-control" value="${stock}" placeholder="150" name="sku-item-stock[${skuCount}]" required></td>
                   <td><button class="btn btn-sm btn-outline-danger" data-action="delete"><i class="bi bi-x-circle"></i></button>
                   </td>
               </tr>
             `;
   };
+
+  if (type == "edit") {
+    arr.forEach(function (sku, index) {
+      // console.log(product.image_url);
+      skuTbody.insertAdjacentHTML(
+        "beforeend",
+        createNewSku(sku.sku_code, sku.price, sku.stock_quantity)
+      );
+    });
+  }
 
   // 監聽 "新增sku" 按鈕的點擊事件
   addSkuBtn.addEventListener("click", () => {

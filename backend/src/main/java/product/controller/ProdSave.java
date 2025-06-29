@@ -173,6 +173,14 @@ public class ProdSave extends HttpServlet {
 				
 			}
             
+            if (isNewProduct) {
+				//prodSkusDao
+				
+			}else {
+
+				//prodSkusDao
+			}
+            
             
             
 		   

@@ -10,6 +10,8 @@ const PROD_CATE_QUERY = "/Project2/ProdCateQueryAll";
 const PROD_CATE_QUERY_PROD = "/Project2/ProdCateQueryAllProd";
 const PROD_QUERY = "/Project2/ProdQueryAll";
 const PROD_UPSERT = "/Project2/ProdSave";
+const IMAGE_QUERY = "/Project2/ProdImageQuery";
+const SKU_QUERY = "/Project2/ProdSkusQuery";
 
 /**
  * 從後端非同步取得所有分類資料
@@ -210,6 +212,68 @@ export async function saveProduct(ProductFormData) {
     }
   } catch (error) {
     console.error("儲存商品資料時發生錯誤:", error);
+    throw error;
+  }
+}
+
+/**
+ * 查詢圖片 by prodId
+ * @param {number | string} prodId - 要查詢圖片的產品 ID
+ * @returns {Promise<object>} 回傳一個包含後端回應的 Promise
+ */
+export async function fetchImage(prodId) {
+  console.log(`正在從 ${IMAGE_QUERY} 查詢 ID 為 ${prodId} 的資料...`);
+
+  try {
+    const response = await fetch(`${IMAGE_QUERY}?prod_id=${prodId}`, {
+      method: "GET", // 使用 GET 方法
+    });
+
+    if (!response.ok) {
+      throw new Error(`伺服器錯誤！狀態碼: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (result && result.status === "success") {
+      console.log("圖片查詢成功！");
+      return result.data;
+    } else {
+      throw new Error(result.message || "圖片查詢失敗，但伺服器未提供錯誤訊息");
+    }
+  } catch (error) {
+    console.error("查詢圖片時發生錯誤:", error);
+    throw error;
+  }
+}
+
+/**
+ * 查詢Sku by prodId
+ * @param {number | string} prodId - 要查詢Sku的產品 ID
+ * @returns {Promise<object>} 回傳一個包含後端回應的 Promise
+ */
+export async function fetchSku(prodId) {
+  console.log(`正在從 ${SKU_QUERY} 查詢 ID 為 ${prodId} 的資料...`);
+
+  try {
+    const response = await fetch(`${SKU_QUERY}?prod_id=${prodId}`, {
+      method: "GET", // 使用 GET 方法
+    });
+
+    if (!response.ok) {
+      throw new Error(`伺服器錯誤！狀態碼: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (result && result.status === "success") {
+      console.log("Sku查詢成功！");
+      return result.data;
+    } else {
+      throw new Error(result.message || "Sku查詢失敗，但伺服器未提供錯誤訊息");
+    }
+  } catch (error) {
+    console.error("查詢Sku時發生錯誤:", error);
     throw error;
   }
 }

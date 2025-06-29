@@ -10,8 +10,8 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-/**This class is a collection of DAO method to access EmpBean
- * 
+/**This class is a collection of DAO method to access ProdImagesBean
+ * 目前已實現新增和用Prod_ID查詢
  * 
  * @Author:Anson_Chuang
  * @version 1.0
@@ -32,40 +32,14 @@ public class ProdImagesDao {
 //			+ "CATE_DESC = ?,\r\n"
 //			+ "PARENT_CATE_ID = ? WHERE CATE_ID = ?";
 //	
-//	private static final String sqlQueryAll = 
-//	"SELECT \r\n"
-//	+ "    c1.cate_id,\r\n"
-//	+ "    c1.cate_name,\r\n"
-//	+ "    c1.cate_desc,\r\n"
-//	+ "    c1.parent_cate_id,\r\n"
-//	+ "    CASE \r\n"
-//	+ "        WHEN \r\n"
-//	+ "            -- 條件一：是否存在子類別\r\n"
-//	+ "            EXISTS (\r\n"
-//	+ "                SELECT 1 \r\n"
-//	+ "                FROM product_category c2 \r\n"
-//	+ "                WHERE c2.parent_cate_id = c1.cate_id\r\n"
-//	+ "            ) \r\n"
-//	+ "            OR -- 使用 OR 將兩個條件連接起來\r\n"
-//	+ "            -- 條件二：是否存在旗下產品\r\n"
-//	+ "            EXISTS (\r\n"
-//	+ "                SELECT 1 \r\n"
-//	+ "                FROM product p \r\n"
-//	+ "                WHERE p.prod_cate_id = c1.cate_id -- 注意：請確認產品表的關聯欄位名稱\r\n"
-//	+ "            )\r\n"
-//	+ "        THEN 1 \r\n"
-//	+ "        ELSE 0 \r\n"
-//	+ "    END AS is_parent\r\n"
-//	+ "FROM \r\n"
-//	+ "    product_category c1\r\n"
-//	+ "ORDER BY \r\n"
-//	+ "    c1.cate_id";
+	private static final String sqlQueryAll = 
+	"SELECT IMAGE_ID,IMAGE_URL,IS_PRIMARY,SORT_ORDER FROM PRODUCT_IMAGES WHERE PROD_ID = ?;";
 
 
 	
 	
 	/*
-	 * This is an insert DAO method of ProdImagesBean
+	 * This is an insert DAO method of ProdImagesBean		
 	 * 
 	 */
 	public void insertProdImage(ProdImagesBean img) throws SQLException {
@@ -138,17 +112,18 @@ public class ProdImagesDao {
 	 * This is a query All DAO method of ProdCateBean
 	 * 
 	 */
-//	public List<ProdCateBean> queryAll() throws SQLException {
-//		QueryRunner queryRunner = new QueryRunner();
-//		BeanListHandler<ProdCateBean> beanListHandler = new BeanListHandler<>(ProdCateBean.class);
-//		Connection conn = null;
-//		try {
-//			conn = JDBCutil.getConnection();
-//			return queryRunner.query(conn, sqlQueryAll, beanListHandler);
-//		}finally {
-//			DbUtils.closeQuietly(conn);
-//		}
+	
+	public List<ProdImagesBean> queryAllByProdID(int prodId) throws SQLException {
+		QueryRunner queryRunner = new QueryRunner();
+		BeanListHandler<ProdImagesBean> beanListHandler = new BeanListHandler<>(ProdImagesBean.class);
+		Connection conn = null;
+		try {
+			conn = JDBCutil.getConnection();
+			return queryRunner.query(conn, sqlQueryAll, beanListHandler, prodId);
+		}finally {
+			DbUtils.closeQuietly(conn);
+		}
 
-//	}
+	}
 	
 }

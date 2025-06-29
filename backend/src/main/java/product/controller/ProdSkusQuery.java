@@ -16,23 +16,25 @@ import java.util.List;
 import product.bean.ProdBean;
 import product.bean.ProdCateBean;
 import product.bean.ProdImagesBean;
+import product.bean.ProdSkusBean;
 import product.dao.ProdCateDao;
 import product.dao.ProdDao;
 import product.dao.ProdImagesDao;
+import product.dao.ProdSkusDao;
 import product.util.GsonUtils;
 
 
 /**
  * Servlet implementation class DaoQueryAll
  */
-@WebServlet("/ProdImageQuery")
-public class ProdImageQuery extends HttpServlet {
+@WebServlet("/ProdSkusQuery")
+public class ProdSkusQuery extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProdImageQuery() {
+    public ProdSkusQuery() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -50,17 +52,17 @@ public class ProdImageQuery extends HttpServlet {
 		
 		// 準備一個 Map 來存放最終要回傳的 JSON 物件的結構
 		HashMap<String, Object> responseData = new HashMap<>();
-		List<ProdImagesBean> imageList = null;
-		ProdImagesDao imgDao = new ProdImagesDao();
+		List<ProdSkusBean> skuList = null;
+		ProdSkusDao skuDao = new ProdSkusDao();
 //		ProdBean prodBean = new ProdBean();
 		try {
-			imageList =  imgDao.queryAllByProdID(prodId);
+			skuList =  skuDao.queryAllByProdID(prodId);
 			
 			// 2. 準備成功時的回應資料
 			responseData.put("status", "success");
-			responseData.put("message", String.format("成功查詢到 %d 筆資料。", imageList.size()));
-			responseData.put("itemCount", imageList.size());
-			responseData.put("data", imageList);
+			responseData.put("message", String.format("成功查詢到 %d 筆資料。",skuList.size()));
+			responseData.put("itemCount", skuList.size());
+			responseData.put("data", skuList);
 		} catch (Exception e) {
 			 // 3. 如果在過程中發生任何錯誤 (例如資料庫連線失敗)
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 設定 HTTP 狀態碼為 500
