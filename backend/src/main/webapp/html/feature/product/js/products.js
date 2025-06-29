@@ -17,7 +17,11 @@ import { generateCodeFromInteger } from "./rand-str.js"; //產生貨號的前置
 /**
  * @description 引入連接後端的模塊
  */
-import { fetchCategoriesProd, fetchProducts } from "./api-client.js";
+import {
+  fetchCategoriesProd,
+  fetchProducts,
+  saveProduct,
+} from "./api-client.js";
 
 // 將扁平的分類陣列轉換為樹狀結構
 function buildCategoryTree(list) {
@@ -326,6 +330,24 @@ async function searchProd(event) {
   }
 }
 
+async function saveProd(event) {
+  event.preventDefault();
+
+  //取得表單資料
+  const form = event.target;
+  const formData = new FormData(form);
+  try {
+    //呼叫儲存API
+    const newProducts = await saveProduct(formData);
+    window.alert("儲存資料成功");
+    loadPage("./feature/product/products");
+  } catch (error) {
+    console.log("儲存資料失敗");
+    console.log("錯誤訊息" + error.message);
+    window.alert("儲存失敗" + error.message);
+  }
+}
+
 /**
  * reset 編輯表單
  */
@@ -454,6 +476,9 @@ export default async function init() {
     document
       .getElementById("search-prod-form")
       .addEventListener("submit", searchProd);
+    document
+      .getElementById("product-edit-form")
+      .addEventListener("submit", saveProd);
   } catch (error) {
     //初始化頁面錯誤處理
     console.error("初始化商品頁面時發生錯誤:", error);

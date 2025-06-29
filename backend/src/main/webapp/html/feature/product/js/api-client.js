@@ -9,6 +9,7 @@ const PROD_CATE_DELETE = "/Project2/ProdCateDelete";
 const PROD_CATE_QUERY = "/Project2/ProdCateQueryAll";
 const PROD_CATE_QUERY_PROD = "/Project2/ProdCateQueryAllProd";
 const PROD_QUERY = "/Project2/ProdQueryAll";
+const PROD_UPSERT = "/Project2/ProdSave";
 
 /**
  * 從後端非同步取得所有分類資料
@@ -179,6 +180,36 @@ export async function fetchProducts(productData = {}) {
     }
   } catch (error) {
     console.error("取得產品資料時發生錯誤:", error);
+    throw error;
+  }
+}
+
+export async function saveProduct(ProductFormData) {
+  console.log(`正在將資料儲存至 ${PROD_UPSERT}...`);
+
+  try {
+    const response = await fetch(PROD_UPSERT, {
+      method: "POST", // 使用 POST 方法來傳送資料
+
+      // 傳入FormData
+      body: ProductFormData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`伺服器錯誤！狀態碼: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    // 檢查後端回傳的業務邏輯是否成功
+    if (result && result.status === "success") {
+      console.log("商品資料儲存成功！");
+      return result; // 將後端的成功回應傳回
+    } else {
+      throw new Error(result.message || "商品儲存失敗，但伺服器未提供錯誤訊息");
+    }
+  } catch (error) {
+    console.error("儲存商品資料時發生錯誤:", error);
     throw error;
   }
 }

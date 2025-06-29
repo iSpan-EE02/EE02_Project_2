@@ -26,8 +26,8 @@ public class ProdDao {
 			+ "SET PROD_NAME = ?,\r\n"
 			+ "PROD_DESC = ?,\r\n"
 			+ "PROD_CATE_ID = ?,\r\n"
-			+ "PROD_STATUS = ?,\r\n"
-			+ "WHERE CATE_ID = ?";
+			+ "PROD_STATUS = ?\r\n"
+			+ "WHERE PROD_ID = ?";
 		
 	
 	/*
@@ -73,7 +73,7 @@ public class ProdDao {
 					prod.getProd_desc(),
 					prod.getProd_cate_id(),
 					prod.getProd_status(),
-					prod.getProd_cate_id()
+					prod.getProd_id()
 			};
 			queryRunner.update(conn,sqlUpdate,params);
 		} catch (Exception e) {

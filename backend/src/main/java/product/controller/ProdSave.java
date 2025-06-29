@@ -19,8 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import product.bean.ProdBean;
 import product.bean.ProdCateBean;
 import product.dao.ProdCateDao;
+import product.dao.ProdDao;
 import product.util.GsonUtils;
 
 /**
@@ -92,10 +94,36 @@ public class ProdSave extends HttpServlet {
 			
 			String prodId = fields.get("prod-id");
             String prodName = fields.get("prod-name");
-            String deletedImages = fields.get("deleted_images");
+            String prodCateId = fields.get("prod-cate-select");
+            String prodDesc = fields.get("prod-desc");
+            String prodStatus = fields.get("prodStatus");
+//            String deletedImages = fields.get("deleted_images");
             
             boolean isNewProduct = (prodId == null || prodId.isEmpty());
 			
+            ProdBean prodBean = new ProdBean();
+            ProdDao prodDao = new ProdDao();
+            
+            if (isNewProduct) {
+				//prodDao
+            	prodBean.setProd_name(prodName);
+				prodBean.setProd_cate_id(Integer.parseInt(prodCateId));
+				prodBean.setProd_desc(prodDesc);
+				prodBean.setProd_status(Integer.parseInt(prodStatus));
+				prodDao.insertProd(prodBean);
+				//prodImagesDao
+				//prodSkusDao
+				
+			}else {
+				prodBean.setProd_id(Integer.parseInt(prodId));
+				prodBean.setProd_name(prodName);
+				prodBean.setProd_cate_id(Integer.parseInt(prodCateId));
+				prodBean.setProd_desc(prodDesc);
+				prodBean.setProd_status(Integer.parseInt(prodStatus));
+				prodDao.updateProd(prodBean);
+				//prodImagesDao
+				//prodSkusDao
+			}
 		   
 			responseData.put("status", "success");
 			responseData.put("message", "已成功儲存資料");
