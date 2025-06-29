@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,9 +29,11 @@ import java.util.UUID;
 import product.bean.ProdBean;
 import product.bean.ProdCateBean;
 import product.bean.ProdImagesBean;
+import product.bean.ProdSkusBean;
 import product.dao.ProdCateDao;
 import product.dao.ProdDao;
 import product.dao.ProdImagesDao;
+import product.dao.ProdSkusDao;
 import product.util.GsonUtils;
 
 /**
@@ -70,7 +73,7 @@ public class ProdSave extends HttpServlet {
         List<Part> newImageParts = new ArrayList<>();
         Map<String, Part> existingImageParts = new HashMap<>();
         //SKU parts
-        List<String> newSkuJsonStrings = new ArrayList<>();
+        List<Part> newSkuJsonStrings = new ArrayList<>();
         Map<String, String> existingSkuJsonStrings = new HashMap<>();
         
         //上傳位置
@@ -90,12 +93,9 @@ public class ProdSave extends HttpServlet {
                     }
                 } else {
                     // 這是一個普通的表單字段 Part
-                	if (partName.equals("new_sku")) {
-                        newSkuJsonStrings.add(getValue(part));
-                    } else if (partName.startsWith("existing_sku_")) {
-                        String skuId = partName.substring("existing_sku_".length());
-                        existingSkuJsonStrings.put(skuId, getValue(part));
-                    } else {
+                	if (partName.startsWith("sku-item-code")) {
+                        newSkuJsonStrings.add(part);
+                    }else{
                         fields.put(partName, getValue(part));
                     }
                 }
@@ -174,12 +174,25 @@ public class ProdSave extends HttpServlet {
 			}
             
             if (isNewProduct) {
-				//prodSkusDao
-				
-			}else {
-
-				//prodSkusDao
-			}
+            	for (int j = 0; j < newSkuJsonStrings.size(); j++) {
+            		String name = newSkuJsonStrings.get(j).getName();
+            		String count = String.valueOf(name.charAt(name.length()-2));
+            		System.out.println(count);
+            		ProdSkusDao prodSkusDao = new ProdSkusDao();
+            		ProdSkusBean prodSkusBean = new ProdSkusBean();
+            		prodSkusBean.setProd_id(newId);
+            		prodSkusBean.setSku_code(request.getParameter("sku-item-code["+count+"]"));
+            		prodSkusBean.setPrice(new BigDecimal(request.getParameter("sku-item-price["+count+"]")));
+            		prodSkusBean.setStock_quantity(Integer.parseInt(request.getParameter("sku-item-stock["+count+"]")));
+            		prodSkusDao.insertProdSku(prodSkusBean);
+            	}
+            }else {
+            	
+            }
+            
+            
+            
+            
             
             
             
