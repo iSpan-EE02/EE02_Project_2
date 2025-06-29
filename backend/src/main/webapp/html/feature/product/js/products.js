@@ -156,7 +156,8 @@ function imgEdit(type, arr = []) {
    * @returns {string} HTML string
    */
   const createNewImageCard = (
-    imgSrc = "https://placehold.co/200x200/6c757d/white?text=點我上傳"
+    imgSrc = "https://placehold.co/200x200/6c757d/white?text=點我上傳",
+    imgId = ""
   ) => {
     // 使用時間戳和隨機數確保 ID 的唯一性
     const uniqueId = `file-input-${Date.now()}-${Math.random()
@@ -166,7 +167,7 @@ function imgEdit(type, arr = []) {
       "https://placehold.co/200x200/dc3545/white?text=圖片載入失敗";
 
     return `
-                <div data-role="image-card" style="position: relative; width: 200px; height: 200px; margin: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s ease-in-out; transform: none;">
+                <div data-role="image-card" data-id="${imgId}" style="position: relative; width: 200px; height: 200px; margin: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s ease-in-out; transform: none;">
                     <!-- 刪除按鈕，使用 data-action 屬性供 JS 選取 -->
                     <button type="button" data-action="delete" aria-label="刪除此圖片" style="position: absolute; top: -10px; right: -10px; z-index: 10; border-radius: 50%; width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.2); background-color: #dc3545; border: 1px solid #dc3545; color: #fff; line-height: 1.5; text-align: center; cursor: pointer;">
                         <i class="bi bi-x-lg"></i>
@@ -185,12 +186,20 @@ function imgEdit(type, arr = []) {
             `;
   };
 
+  const createNewDeleteCard = () => {
+    // 新增一個記錄刪除圖片的input
+    return `
+            <input type="text" class="form-control" value="" name="delete-item" id="delete-item-input" hidden></td>
+            `;
+  };
+
   if (type == "edit") {
+    imageContainer.insertAdjacentHTML("beforeend", createNewDeleteCard());
     arr.forEach(function (product, index) {
       console.log(product.image_url);
       imageContainer.insertAdjacentHTML(
         "beforeend",
-        createNewImageCard(product.image_url)
+        createNewImageCard(product.image_url, product.image_id)
       );
     });
   }
@@ -208,12 +217,26 @@ function imgEdit(type, arr = []) {
     const deleteButton = event.target.closest('[data-action="delete"]');
     if (deleteButton) {
       // 如果是，則找到最近的卡片父元素並將其從 DOM 中移除
+      if (type == "edit") {
+        const cardDiv = deleteButton.closest("div");
+        const id = cardDiv.dataset.id;
+        const deleteValue = document.getElementById("delete-item-input").value;
+        document.getElementById("delete-item-input").value =
+          id + "," + deleteValue;
+      }
       deleteButton.closest('[data-role="image-card"]').remove();
     }
   });
 
   // 監聽容器內的 change 事件 (用於檔案選擇)
   imageContainer.addEventListener("change", (event) => {
+    if (type == "edit") {
+      const cardDiv = event.target.closest("div");
+      const id = cardDiv.dataset.id;
+      const deleteValue = document.getElementById("delete-item-input").value;
+      document.getElementById("delete-item-input").value =
+        id + "," + deleteValue;
+    }
     // 透過 .matches() 和 data-role 屬性判斷觸發事件的是否為檔案輸入框
     if (event.target.matches('[data-role="file-input"]')) {
       const fileInput = event.target;
@@ -459,6 +482,8 @@ export default async function init() {
 
     // 取得產品資料
     const products = await fetchProducts();
+
+    console.log(products);
 
     const productsAndCate = mergeProductWithCategoryName(products, categories);
 

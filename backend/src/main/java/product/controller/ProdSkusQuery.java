@@ -7,19 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import product.bean.ProdBean;
-import product.bean.ProdCateBean;
-import product.bean.ProdImagesBean;
 import product.bean.ProdSkusBean;
-import product.dao.ProdCateDao;
-import product.dao.ProdDao;
-import product.dao.ProdImagesDao;
 import product.dao.ProdSkusDao;
 import product.util.GsonUtils;
 
