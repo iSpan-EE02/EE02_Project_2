@@ -7,7 +7,7 @@
         <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">商品管理</h1>
-            <button class="btn btn-success" @click="newVisible = !newVisible" id="new-prod-btn"><i
+            <button type="button" class="btn btn-success" @click="newVisible = !newVisible" id="new-prod-btn"><i
                     class="bi bi-plus-circle"></i>
                 新增商品</button>
         </div>
@@ -115,7 +115,8 @@
                     <!-- 分頁控制 -->
                     <div class="d-flex align-items-center mb-3 w-50 mx-auto">
                         <!-- 上一頁按鈕 -->
-                        <button @click="previousPage()" class="btn btn-outline-secondary" style="line-height: 16px;">
+                        <button type="button" @click="previousPage()" class="btn btn-outline-secondary"
+                            style="line-height: 16px;">
                             &lt;
                         </button>
 
@@ -127,7 +128,8 @@
                         </select>
 
                         <!-- 下一頁按鈕 -->
-                        <button @click="nextPage()" class="btn btn-outline-secondary" style="line-height: 16px;">
+                        <button type="button" @click="nextPage()" class="btn btn-outline-secondary"
+                            style="line-height: 16px;">
                             &gt;
                         </button>
                     </div>
@@ -163,6 +165,7 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">商品名稱</label>
+                        <input type="hidden" id="prod-id-edit" name="prod-id">
                         <input type="text" class="form-control" placeholder="EX:經典純棉素色T恤" name="prod-name"
                             id="prod-name" required>
                     </div>
@@ -244,7 +247,7 @@
             </div>
 
             <div class="mt-4 text-end">
-                <button class="btn btn-secondary" @click="newVisible = !newVisible">取消</button>
+                <button type="button" class="btn btn-secondary" @click="newVisible = !newVisible">取消</button>
                 <button class="btn btn-primary btn-lg" type="submit">儲存所有變更</button>
             </div>
         </form>

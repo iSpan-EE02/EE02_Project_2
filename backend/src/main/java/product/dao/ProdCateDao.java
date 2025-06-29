@@ -10,8 +10,8 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-/**This class is a collection of DAO method to access EmpBean
- * 
+/**This class is a collection of DAO method to access ProdCateBean
+ * 有增加，修改，查詢功能，刪除功能（只有沒有子類別或是產品時才允許刪除）
  * 
  * @Author:Anson_Chuang
  * @version 1.0

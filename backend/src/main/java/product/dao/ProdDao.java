@@ -4,107 +4,84 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-
 import product.bean.ProdBean;
+import product.util.JDBCutil;
 
-/**This class is a collection of DAO method to access EmpBean
- * 
+/**This class is a collection of DAO method to access ProdBean
+ * 有增加，修改，查詢功能，不允許刪除（只能下架，避免造成訂單資訊遺失）
  * 
  * @Author:Anson_Chuang
  * @version 1.0
  * @since 2025-06-17
  */
 
-import product.bean.ProdCateBean;
-import product.util.JDBCutil;
 
 public class ProdDao {
-//	private static final String sqlInsert = "INSERT INTO PRODUCT_CATEGORY (CATE_NAME, PARENT_CATE_ID, CATE_DESC) VALUES(?,?,?)";
-//
-//	private static final String sqlDelete = "DELETE FROM PRODUCT_CATEGORY WHERE CATE_ID = ?";
-//	
-//	private static final String sqlUpdate = "UPDATE product_category\r\n"
-//			+ "SET CATE_NAME = ?,\r\n"
-//			+ "CATE_DESC = ?,\r\n"
-//			+ "PARENT_CATE_ID = ? WHERE CATE_ID = ?";
+	private static final String sqlInsert = "INSERT INTO PRODUCT (PROD_NAME, PROD_DESC, PROD_CATE_ID, PROD_STATUS) VALUES(?,?,?,?)";
 	
-
-	
+	private static final String sqlUpdate = "UPDATE PRODUCT\r\n"
+			+ "SET PROD_NAME = ?,\r\n"
+			+ "PROD_DESC = ?,\r\n"
+			+ "PROD_CATE_ID = ?,\r\n"
+			+ "PROD_STATUS = ?,\r\n"
+			+ "WHERE CATE_ID = ?";
+		
 	
 	/*
-	 * This is an insert DAO method of ProdCateBean
+	 * This is an insert DAO method of ProdBean
 	 * 
 	 */
-	public void insertProd(ProdCateBean cate) throws SQLException {
-//		Connection conn = JDBCutil.getConnection();
-//		QueryRunner queryRunner = new QueryRunner();
-//		
-//		try {
-//			
-//			if(cate.getParent_cate_id()==0) {
-//				cate.setParent_cate_id(null);
-//			}
-//			
-//			Object[] params = {
-//					cate.getCate_name(),
-//					cate.getParent_cate_id(),
-//					cate.getCate_desc()
-//			};
-//			
-//			queryRunner.update(conn,sqlInsert, params);			
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//		}finally {
-//			DbUtils.close(conn);
-//		}
+	public void insertProd(ProdBean prod) throws SQLException {
+		Connection conn = JDBCutil.getConnection();
+		QueryRunner queryRunner = new QueryRunner();
+		
+		try {
+			
+
+			Object[] params = {
+					prod.getProd_name(),
+					prod.getProd_desc(),
+					prod.getProd_cate_id(),
+					prod.getProd_status()
+					
+			};
+			
+			queryRunner.update(conn,sqlInsert, params);			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DbUtils.close(conn);
+		}
 		
 	}
 
-	/*
-	
-	 * This is a delete DAO method of ProdCateBean
-	 * 
-	 */
-	public void deleteProdCate(Integer cateId) throws SQLException {
-//		Connection conn = JDBCutil.getConnection();
-//		QueryRunner queryRunner = new QueryRunner();
-//		try {
-//			queryRunner.update(conn,sqlDelete, cateId);	
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//		}finally {
-//			DbUtils.close(conn);
-//		}
-	}
 
 	/*
-	 * This is a update DAO method of ProdCateBean
+	 * This is a update DAO method of ProdBean
 	 * 
 	 */
-	public void updateProdCate(ProdCateBean cate) throws SQLException {
-//		Connection conn = JDBCutil.getConnection();
-//		QueryRunner queryRunner = new QueryRunner();
-//		try {
-//			Object[] params = {
-//					cate.getCate_name(),
-//					cate.getCate_desc(),
-//					cate.getParent_cate_id(),
-//					cate.getCate_id()
-//			};
-//			queryRunner.update(conn,sqlUpdate,params);
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			e.printStackTrace();
-//		}finally {
-//			DbUtils.close(conn);
-//		}
+	public void updateProd(ProdBean prod) throws SQLException {
+		Connection conn = JDBCutil.getConnection();
+		QueryRunner queryRunner = new QueryRunner();
+		try {
+			Object[] params = {
+					prod.getProd_name(),
+					prod.getProd_desc(),
+					prod.getProd_cate_id(),
+					prod.getProd_status(),
+					prod.getProd_cate_id()
+			};
+			queryRunner.update(conn,sqlUpdate,params);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			DbUtils.close(conn);
+		}
 	}
 
 

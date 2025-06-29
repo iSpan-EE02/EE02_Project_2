@@ -102,12 +102,12 @@ function newProd() {
   skuEdit("new");
 }
 
-window.editProduct = function (product) {
-  // console.log("編輯商品");
+window.editProduct = async function (product) {
+  resetEditForm();
   document.getElementById("product-edit-head").innerText =
     "編輯商品:" + product["prod_name"];
   console.log(product);
-
+  document.getElementById("prod-id-edit").value = product["prod_id"];
   document.getElementById("prod-name").value = product["prod_name"];
   document.getElementById("prod-cate-select").value = product["prod_cate_id"];
   document.getElementById("prod-desc").value = product["prod_desc"];
@@ -130,21 +130,12 @@ window.editProduct = function (product) {
       break;
   }
 
-  const prodID = product["prod_id"];
-  console.log(prodID);
-  console.log("hi");
+  imgEdit();
+  skuEdit("edit", product["prod_id"]);
 
-  // event.preventDefault();
-  //     const targetLi = event.target.closest("li");
-  //     if (targetLi.dataset) {
-  //       // 從 li 元素中的 dataset 中讀取分類資訊
-  //       const { id, name, isParent } = targetLi.dataset;
-  //       // 填充右側查詢表單
-  //       cateEditFilter(id, name, isParent);
-  //     }
-  // resetEditForm();
-  // imgEdit();
-  // skuEdit("new");
+  // 載入圖片
+
+  // 載入SKU
 };
 
 function imgEdit() {
@@ -178,7 +169,7 @@ function imgEdit() {
                     </label>
                     
                     <!-- 隱藏的檔案上傳 input，使用 data-role 屬性供 JS 選取 -->
-                    <input type="file" accept="image/*" id="${uniqueId}" data-role="file-input" style="display: none;" name="prod-img">
+                    <input type="file" accept="image/*" id="${uniqueId}" data-role="file-input" style="display: none;" name="new_prod_img">
                 </div>
             `;
   };
@@ -223,14 +214,14 @@ function imgEdit() {
   });
 }
 
-function skuEdit(type) {
+function skuEdit(type, id = 1) {
   const addSkuBtn = document.getElementById("add-sku-btn");
   const skuTbody = document.getElementById("sku-tbody");
   let skuItemPrefix = "XXXX-";
   if (type == "new") {
     skuItemPrefix = generateCodeFromInteger(maxId + 1) + "-";
   } else {
-    skuItemPrefix = "XXXX-";
+    skuItemPrefix = generateCodeFromInteger(id) + "-";
   }
   let skuCount = skuTbody.childElementCount;
 
@@ -348,6 +339,18 @@ function resetEditForm() {
 
   const skuTbody = document.getElementById("sku-tbody");
   skuTbody.innerHTML = "";
+  const addSkuBtn = document.getElementById("add-sku-btn");
+  const addImageBtn = document.getElementById("addImageBtn");
+
+  removeAllListenersFromElement(skuTbody);
+  removeAllListenersFromElement(addSkuBtn);
+  removeAllListenersFromElement(imageContainer);
+  removeAllListenersFromElement(addImageBtn);
+}
+
+function removeAllListenersFromElement(element) {
+  let clone = element.cloneNode(true);
+  element.replaceWith(clone);
 }
 
 /**
