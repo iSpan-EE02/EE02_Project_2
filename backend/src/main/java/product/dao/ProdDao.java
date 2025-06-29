@@ -1,5 +1,7 @@
 package product.dao;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,6 +9,8 @@ import java.util.List;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
+
 import product.bean.ProdBean;
 import product.util.JDBCutil;
 
@@ -34,9 +38,10 @@ public class ProdDao {
 	 * This is an insert DAO method of ProdBean
 	 * 
 	 */
-	public void insertProd(ProdBean prod) throws SQLException {
+	public int insertProd(ProdBean prod) throws SQLException {
 		Connection conn = JDBCutil.getConnection();
 		QueryRunner queryRunner = new QueryRunner();
+		int newProdId = -1; // 初始化為一個無效的值
 		
 		try {
 			
@@ -48,14 +53,25 @@ public class ProdDao {
 					prod.getProd_status()
 					
 			};
+			ScalarHandler<Number> handler = new ScalarHandler<>();
 			
-			queryRunner.update(conn,sqlInsert, params);			
+			
+			
+			Number generatedId = queryRunner.insert(conn,sqlInsert, handler, params);	
+			
+			 if (generatedId != null) {
+		            newProdId = generatedId.intValue();
+		        }
+				
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}finally {
 			DbUtils.close(conn);
 		}
+		
+		System.out.println("newProdId"+newProdId);
+		return newProdId;
 		
 	}
 

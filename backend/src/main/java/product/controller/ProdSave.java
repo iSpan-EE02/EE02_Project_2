@@ -10,19 +10,27 @@ import jakarta.servlet.http.Part;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import product.bean.ProdBean;
 import product.bean.ProdCateBean;
+import product.bean.ProdImagesBean;
 import product.dao.ProdCateDao;
 import product.dao.ProdDao;
+import product.dao.ProdImagesDao;
 import product.util.GsonUtils;
 
 /**
@@ -32,6 +40,7 @@ import product.util.GsonUtils;
 @MultipartConfig
 public class ProdSave extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -52,6 +61,7 @@ public class ProdSave extends HttpServlet {
 
 		response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+        // 準備一個 Map 來存放最終要回傳的 JSON 物件的結構
         HashMap<String, Object> responseData = new HashMap<>();
         
         // text parts
@@ -63,8 +73,7 @@ public class ProdSave extends HttpServlet {
         List<String> newSkuJsonStrings = new ArrayList<>();
         Map<String, String> existingSkuJsonStrings = new HashMap<>();
         
-		
-		// 準備一個 Map 來存放最終要回傳的 JSON 物件的結構
+        //上傳位置
 
 		try {
 			
@@ -97,6 +106,7 @@ public class ProdSave extends HttpServlet {
             String prodCateId = fields.get("prod-cate-select");
             String prodDesc = fields.get("prod-desc");
             String prodStatus = fields.get("prodStatus");
+            Integer newId = 0;
 //            String deletedImages = fields.get("deleted_images");
             
             boolean isNewProduct = (prodId == null || prodId.isEmpty());
@@ -104,13 +114,14 @@ public class ProdSave extends HttpServlet {
             ProdBean prodBean = new ProdBean();
             ProdDao prodDao = new ProdDao();
             
+            
             if (isNewProduct) {
 				//prodDao
             	prodBean.setProd_name(prodName);
 				prodBean.setProd_cate_id(Integer.parseInt(prodCateId));
 				prodBean.setProd_desc(prodDesc);
 				prodBean.setProd_status(Integer.parseInt(prodStatus));
-				prodDao.insertProd(prodBean);
+				newId =  prodDao.insertProd(prodBean);
 				//prodImagesDao
 				//prodSkusDao
 				
@@ -124,6 +135,46 @@ public class ProdSave extends HttpServlet {
 				//prodImagesDao
 				//prodSkusDao
 			}
+            
+            if (isNewProduct) {
+				//prodImagesDao
+				
+				for (int i = 0; i < newImageParts.size(); i++) {
+					if (i==0) {
+						String webappRootPath = getServletContext().getRealPath("/");
+						String uploadDir = "html/feature/product/img";
+						Path uploadPath = Paths.get(webappRootPath, uploadDir);
+						Part firstImage = newImageParts.get(i);
+						String originalFileName = firstImage.getSubmittedFileName();
+						String fileExtension = "";
+						int f = originalFileName.lastIndexOf('.');
+						fileExtension = originalFileName.substring(f);
+						String newFileName = UUID.randomUUID().toString() + fileExtension;
+						Path destinationPath = uploadPath.resolve(newFileName); 
+						String savePath = "/Project2/" + uploadDir + "/" + newFileName;
+						InputStream inputStream = firstImage.getInputStream();
+						Files.copy(inputStream, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+						
+						//存到資料庫
+						ProdImagesBean prodImagesBean = new ProdImagesBean();
+						prodImagesBean.setImage_url(savePath);
+						prodImagesBean.setIs_primary(1);
+						prodImagesBean.setProd_id(newId);
+						prodImagesBean.setSort_order(1);
+						ProdImagesDao prodImagesDao = new ProdImagesDao();
+						prodImagesDao.insertProdImage(prodImagesBean);
+						System.out.println("檔案成功儲存");
+					}
+				}
+
+
+			}else {
+				//prodImagesDao
+				
+			}
+            
+            
+            
 		   
 			responseData.put("status", "success");
 			responseData.put("message", "已成功儲存資料");
