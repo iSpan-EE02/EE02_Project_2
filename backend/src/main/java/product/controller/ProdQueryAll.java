@@ -7,14 +7,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import product.bean.ProdBean;
-import product.bean.ProdCateBean;
-import product.dao.ProdCateDao;
 import product.dao.ProdDao;
 import product.util.GsonUtils;
 
@@ -40,13 +38,21 @@ public class ProdQueryAll extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		String jsonRequest = new String(request.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+		System.out.println(jsonRequest);
+		ProdBean prodBean = GsonUtils.fromJson(jsonRequest, ProdBean.class);
+		
 		// 準備一個 Map 來存放最終要回傳的 JSON 物件的結構
 		HashMap<String, Object> responseData = new HashMap<>();
 		List<ProdBean> prodList = null;
-		ProdDao prodDao = new ProdDao();		
+		ProdDao prodDao = new ProdDao();
+//		ProdBean prodBean = new ProdBean();
 		try {
 			// 1. 取得列表
-			prodList =  prodDao.queryAll();
+			if(prodBean==null) {
+				prodBean = new ProdBean();
+			}
+			prodList =  prodDao.queryAll(prodBean);
 			
 			// 2. 準備成功時的回應資料
 			responseData.put("status", "success");

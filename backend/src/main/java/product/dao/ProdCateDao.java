@@ -10,8 +10,8 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-/**This class is a collection of DAO method to access EmpBean
- * 
+/**This class is a collection of DAO method to access ProdCateBean
+ * 有增加，修改，查詢功能，刪除功能（只有沒有子類別或是產品時才允許刪除）
  * 
  * @Author:Anson_Chuang
  * @version 1.0
@@ -52,6 +52,28 @@ public class ProdCateDao {
 	+ "                FROM product p \r\n"
 	+ "                WHERE p.prod_cate_id = c1.cate_id -- 注意：請確認產品表的關聯欄位名稱\r\n"
 	+ "            )\r\n"
+	+ "        THEN 1 \r\n"
+	+ "        ELSE 0 \r\n"
+	+ "    END AS is_parent\r\n"
+	+ "FROM \r\n"
+	+ "    product_category c1\r\n"
+	+ "ORDER BY \r\n"
+	+ "    c1.cate_id";
+	
+	private static final String sqlQueryAllForProd = 
+	"SELECT \r\n"
+	+ "    c1.cate_id,\r\n"
+	+ "    c1.cate_name,\r\n"
+	+ "    c1.cate_desc,\r\n"
+	+ "    c1.parent_cate_id,\r\n"
+	+ "    CASE \r\n"
+	+ "        WHEN \r\n"
+	+ "            -- 條件一：是否存在子類別\r\n"
+	+ "            EXISTS (\r\n"
+	+ "                SELECT 1 \r\n"
+	+ "                FROM product_category c2 \r\n"
+	+ "                WHERE c2.parent_cate_id = c1.cate_id\r\n"
+	+ "            ) \r\n"
 	+ "        THEN 1 \r\n"
 	+ "        ELSE 0 \r\n"
 	+ "    END AS is_parent\r\n"
@@ -146,6 +168,19 @@ public class ProdCateDao {
 		try {
 			conn = JDBCutil.getConnection();
 			return queryRunner.query(conn, sqlQueryAll, beanListHandler);
+		}finally {
+			DbUtils.closeQuietly(conn);
+		}
+
+	}
+	
+	public List<ProdCateBean> queryAllProd() throws SQLException {
+		QueryRunner queryRunner = new QueryRunner();
+		BeanListHandler<ProdCateBean> beanListHandler = new BeanListHandler<>(ProdCateBean.class);
+		Connection conn = null;
+		try {
+			conn = JDBCutil.getConnection();
+			return queryRunner.query(conn, sqlQueryAllForProd, beanListHandler);
 		}finally {
 			DbUtils.closeQuietly(conn);
 		}
