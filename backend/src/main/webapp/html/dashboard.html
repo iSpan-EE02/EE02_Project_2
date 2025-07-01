@@ -7,7 +7,7 @@
         <div class="card text-white bg-primary mb-3">
             <div class="card-body">
                 <h5 class="card-title"><i class="bi bi-box-seam-fill"></i> 上架中商品</h5>
-                <p class="card-text fs-2">158</p>
+                <p class="card-text fs-2" id="dashboard-prod-count">8</p>
             </div>
         </div>
     </div>
@@ -15,7 +15,7 @@
         <div class="card text-white bg-success mb-3">
             <div class="card-body">
                 <h5 class="card-title"><i class="bi bi-currency-dollar"></i> 庫存總值</h5>
-                <p class="card-text fs-2">$1,234,567</p>
+                <p class="card-text fs-2">$1,234,5</p>
             </div>
         </div>
     </div>
@@ -60,7 +60,8 @@
 
 <div class="mt-4">
     <h4>快速入口</h4>
-    <button class="btn btn-lg btn-success" onclick="loadPage('./feature/product/products', event)"><i class="bi bi-plus-circle-fill"></i>
+    <button class="btn btn-lg btn-success" onclick="loadPage('./feature/product/products', event)"><i
+            class="bi bi-plus-circle-fill"></i>
         管理商品</button>
     <button class="btn btn-lg btn-info text-white" onclick="loadPage('./feature/product/categories', event)"><i
             class="bi bi-diagram-3-fill"></i> 管理商品分類</button>

@@ -1,13 +1,7 @@
-// 當整個網頁的 DOM 結構都載入完成後，再執行我們的腳本
 document.addEventListener("DOMContentLoaded", () => {
   const mainContentArea = document.getElementById("main-content-area");
   const navLinks = document.querySelectorAll(".sidebar .nav-link");
 
-  /**
-   * 非同步載入主頁面內容，並處理與頁面相關的腳本
-   * @param {string} path - 要載入的頁面路徑 (不含 .html 副檔名)，例如 'dashboard' 或 'feature/product/categories'
-   * @param {Event} event - 點擊事件物件
-   */
   window.loadPage = async function (path, event) {
     if (event) {
       event.preventDefault(); // 阻止 <a> 標籤的預設跳轉行為
@@ -57,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const pageScripts = {
       "./feature/product/categories": "../feature/product/js/categories.js",
       "./feature/product/products": "../feature/product/js/products.js",
+      "./dashboard": "./dashboard.js",
     };
     // 使用 ./ 確保路徑是從根目錄開始的相對路徑
     return pageScripts[path] || null;
@@ -64,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- 初始頁面載入 ---
   // 預設載入儀表板
-  loadPage("dashboard");
+  loadPage("./dashboard");
   const dashboardLink = document.querySelector(
     '.sidebar .nav-link[onclick*="dashboard"]'
   );

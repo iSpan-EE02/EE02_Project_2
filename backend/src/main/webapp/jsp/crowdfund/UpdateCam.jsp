@@ -35,7 +35,7 @@ if (cam == null) {
 <body>
 <div align="center" class="container mt-5">
 <h2>更新資料</h2>
-<form method="post" action="<%= request.getContextPath() %>/CrowdFundUpdateCam" onsubmit="return validateForm();" >
+<form method="post" action="<%= request.getContextPath() %>/CrowdFundUpdateCam" onsubmit="return validateForm();" enctype="multipart/form-data" >
 <table  border="1" class="table table-striped">
 <tr>
 	<td>活動編號

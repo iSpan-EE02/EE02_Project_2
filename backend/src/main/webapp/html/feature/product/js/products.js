@@ -372,11 +372,23 @@ async function searchProd(event) {
     // 在 window 上廣播這個事件
     window.dispatchEvent(event3);
 
-    window.alert("搜尋資料成功");
+    // 新的總頁數
+    const newTotalPagesFromAPI = Math.ceil(newProductsAndCate.length / 6);
+
+    // 建立一個自訂事件
+    const event4 = new CustomEvent("update-total-pages", {
+      detail: {
+        newTotal: newTotalPagesFromAPI, // 將新總頁數放在 detail 物件中
+      },
+    });
+
+    window.dispatchEvent(event4);
+
+    // window.alert("搜尋資料成功");
   } catch (error) {
     console.log("搜尋資料失敗");
     console.log("錯誤訊息" + error.message);
-    window.alert("搜尋失敗" + error.message);
+    // window.alert("搜尋失敗" + error.message);
   }
 }
 
@@ -500,7 +512,7 @@ export default async function init() {
      */
 
     // 新的總頁數
-    const newTotalPagesFromAPI = Math.floor(products.length / 6) + 1;
+    const newTotalPagesFromAPI = Math.ceil(products.length / 6);
 
     // 建立一個自訂事件
     const event = new CustomEvent("update-total-pages", {

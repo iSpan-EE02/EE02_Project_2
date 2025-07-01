@@ -88,22 +88,24 @@ public class UpdateOrders extends HttpServlet {
 //			Context context = new InitialContext();
 //	        DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/team6db");
 //	        try (Connection conn = ds.getConnection()){
-				Connection conn = LAButil.getConnection();
+//				Connection conn = LAButil.getConnection();
 	        	OrdersDao dao = new OrdersDao();
 	        	dao.updateOrders(bean);
-	        	conn.close();
+//	        	conn.close();
 	}catch (Exception e) {
 		// TODO: handle exception
+		e.printStackTrace();
 	}
 		response.sendRedirect(request.getContextPath() + "/AllOrders");
-		System.out.println("=== Update 表單資料 ===");
-		System.out.println("ordersId: " + ordersId);
-		System.out.println("memId: " + memId);
+		System.out.println(request.getContextPath());
+//		System.out.println("=== Update 表單資料 ===");
+//		System.out.println("ordersId: " + ordersId);
+//		System.out.println("memId: " + memId);
 //		System.out.println("ordersDate: " + ordersDate);
-		System.out.println("totalPrice: " + totalPrice);
-		System.out.println("shipId: " + shipId);
-		System.out.println("shipFee: " + shipFee);
-		System.out.println("finalPrice: " + finalPrice);
+//		System.out.println("totalPrice: " + totalPrice);
+//		System.out.println("shipId: " + shipId);
+//		System.out.println("shipFee: " + shipFee);
+//		System.out.println("finalPrice: " + finalPrice);
 		
 	}
 

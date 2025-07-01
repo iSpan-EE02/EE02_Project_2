@@ -28,7 +28,7 @@
                     <h4 class="text-white text-center mb-4">瘋購物</h4>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="loadPage('dashboard', event)">
+                            <a class="nav-link" href="#" onclick="loadPage('./dashboard', event)">
                                 <i class="bi bi-speedometer2"></i> 儀表板
                             </a>
                         </li>
@@ -71,6 +71,10 @@
                         </li>
                     </ul>
                 </div>
+                <div class="position-absolute bottom-0 start-50 translate-middle-x mb-3">
+                    <button class="btn btn-primary"><a href="./login.html"
+                            class="text-white text-decoration-none">登出</a></button>
+                </div>
             </nav>
 
             <!-- ====================================================== -->
@@ -87,6 +91,7 @@
     <!-- 載入您自訂的 JS -->
     <script src="./js/script.js"></script>
     <script src="./js/alpine.min.js"></script>
+
 
 </body>
 

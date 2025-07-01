@@ -18,11 +18,11 @@ import java.util.List;
 import crowdfund.DAO.FundraisingDao;
 import crowdfund.bean.CampaignBean;
 
-//@MultipartConfig(
-//	    maxFileSize = 50 * 1024 * 1024, // 最大檔案大小 50MB
-//	    maxRequestSize = 100 * 1024 * 1024, // 最大請求大小 100MB
-//	    fileSizeThreshold = 1024 * 1024 // 1MB 用於存放臨時檔案
-//	)
+@MultipartConfig(
+	    maxFileSize = 50 * 1024 * 1024, // 最大檔案大小 50MB
+	    maxRequestSize = 100 * 1024 * 1024, // 最大請求大小 100MB
+	    fileSizeThreshold = 1024 * 1024 // 1MB 用於存放臨時檔案
+	)
 @WebServlet("/CrowdFundUpdateCam")
 public class CrowdFundUpdateCam extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -116,26 +116,26 @@ public class CrowdFundUpdateCam extends HttpServlet {
 	        errors.add("建立者ID格式錯誤");
 	    }
 	    
-//	    上傳照片
-//		Part imagePart = request.getPart("cover_image");
-//        String imagePath = null;
-//        String oldImagePath = request.getParameter("original_cover_image");
-//
-//        if (imagePart != null && imagePart.getSize() > 0) {
-//            String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
-//            String uploadPath = getServletContext().getRealPath("/jsp/crowdfund/uploads");
-//
-//            File uploadDir = new File(uploadPath);
-//            if (!uploadDir.exists()) uploadDir.mkdirs();
-//
-//            String filePath = uploadPath + File.separator + fileName;
-//            imagePart.write(filePath);
-//
-//            imagePath = "jsp/crowdfund/uploads/" + fileName; // 儲存相對路徑
-//        } else {
-//        	imagePath = oldImagePath != null ? oldImagePath : "jsp/crowdfund/uploads/default.jpg";
-//        }
-//	    
+	    //上傳照片
+		Part imagePart = request.getPart("cover_image");
+        String imagePath = null;
+        String oldImagePath = request.getParameter("original_cover_image");
+
+        if (imagePart != null && imagePart.getSize() > 0) {
+            String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+            String uploadPath = getServletContext().getRealPath("/jsp/crowdfund/uploads");
+
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) uploadDir.mkdirs();
+
+            String filePath = uploadPath + File.separator + fileName;
+            imagePart.write(filePath);
+
+            imagePath = "jsp/crowdfund/uploads/" + fileName; // 儲存相對路徑
+        } else {
+        	imagePath = oldImagePath != null ? oldImagePath : "jsp/crowdfund/uploads/default.jpg";
+        }
+	    
 
 	    if (!errors.isEmpty()) {
 	    	CampaignBean cam = new CampaignBean();
@@ -166,7 +166,7 @@ public class CrowdFundUpdateCam extends HttpServlet {
 		cam.setCurrentAmount(currentAmount);
 		cam.setStartDate(startDate);
 		cam.setEndDate(endDate);
-//		cam.setCoverImage(imagePath);
+		cam.setCoverImage(imagePath);
 		cam.setStatus(status);
 		cam.setCreatorID(creatorInt);
 		cam.setDescription(description);

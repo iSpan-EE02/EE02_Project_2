@@ -28,7 +28,7 @@ public class AllOrders extends HttpServlet {
 		// TODO Auto-generated method stub
 		OrdersDao ordersDao = new OrdersDao();
 		List<OrdersBean> ordersList = ordersDao.findAll();
-		System.out.println("✅ 查到訂單筆數：" + ordersList.size());
+//		System.out.println("✅ 查到訂單筆數：" + ordersList.size());
 	    request.setAttribute("ordersList", ordersList);
 	    request.getRequestDispatcher("/jsp/orders/Orders.jsp").forward(request, response);
 	}

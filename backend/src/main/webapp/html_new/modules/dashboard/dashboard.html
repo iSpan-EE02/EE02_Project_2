@@ -1,0 +1,352 @@
+<!-- 儀表板頁面 -->
+<div class="dashboard-container fade-in">
+    
+    <!-- 統計卡片區域 -->
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-icon">
+                        <i class="bi bi-box-seam-fill"></i>
+                    </div>
+                    <h3 class="stat-number" id="productCount">0</h3>
+                    <p class="stat-label">上架商品</p>
+                </div>
+                <div class="stat-trend">
+                    <span class="badge bg-success">
+                        <i class="bi bi-arrow-up"></i> +12%
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card success">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-icon">
+                        <i class="bi bi-currency-dollar"></i>
+                    </div>
+                    <h3 class="stat-number" id="totalRevenue">NT$0</h3>
+                    <p class="stat-label">本月營收</p>
+                </div>
+                <div class="stat-trend">
+                    <span class="badge bg-light text-dark">
+                        <i class="bi bi-arrow-up"></i> +8.5%
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card info">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-icon">
+                        <i class="bi bi-receipt-cutoff"></i>
+                    </div>
+                    <h3 class="stat-number" id="orderCount">0</h3>
+                    <p class="stat-label">今日訂單</p>
+                </div>
+                <div class="stat-trend">
+                    <span class="badge bg-warning text-dark">
+                        <i class="bi bi-arrow-down"></i> -2.3%
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card warning">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="stat-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h3 class="stat-number" id="userCount">0</h3>
+                    <p class="stat-label">活躍用戶</p>
+                </div>
+                <div class="stat-trend">
+                    <span class="badge bg-light text-dark">
+                        <i class="bi bi-arrow-up"></i> +15.2%
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要內容區域 -->
+    <div class="row">
+        <!-- 左側內容 -->
+        <div class="col-lg-8">
+            
+            <!-- 銷售圖表 -->
+            <div class="page-section mb-4">
+                <div class="page-section-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="page-section-title">
+                            <i class="bi bi-graph-up me-2"></i>
+                            銷售趨勢
+                        </h5>
+                        <div class="btn-group btn-group-sm">
+                            <input type="radio" class="btn-check" name="period" id="period7d" value="7d" checked>
+                            <label class="btn btn-outline-primary" for="period7d">7天</label>
+                            
+                            <input type="radio" class="btn-check" name="period" id="period30d" value="30d">
+                            <label class="btn btn-outline-primary" for="period30d">30天</label>
+                            
+                            <input type="radio" class="btn-check" name="period" id="period90d" value="90d">
+                            <label class="btn btn-outline-primary" for="period90d">90天</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-section-body">
+                    <div id="salesChart" style="height: 300px;">
+                        <!-- 圖表將在這裡動態載入 -->
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary mb-2" role="status"></div>
+                                <p class="text-muted">載入圖表中...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最新訂單 -->
+            <div class="page-section">
+                <div class="page-section-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="page-section-title">
+                            <i class="bi bi-clipboard-data me-2"></i>
+                            最新訂單
+                        </h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary" data-route="orders">
+                            檢視全部
+                        </a>
+                    </div>
+                </div>
+                <div class="page-section-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>訂單編號</th>
+                                    <th>客戶</th>
+                                    <th>金額</th>
+                                    <th>狀態</th>
+                                    <th>時間</th>
+                                    <th width="100">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrdersTable">
+                                <!-- 訂單資料將在這裡動態載入 -->
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <div class="spinner-border spinner-border-sm text-muted me-2"></div>
+                                        載入中...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側內容 -->
+        <div class="col-lg-4">
+            
+            <!-- 系統警報 -->
+            <div class="dashboard-alerts mb-4">
+                <div class="alert-header">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    系統警報
+                </div>
+                <ul class="alert-list" id="systemAlerts">
+                    <!-- 警報將在這裡動態載入 -->
+                    <li class="alert-item">
+                        <div>
+                            <strong>低庫存警告</strong>
+                            <div class="text-muted small">5件商品庫存不足</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary">處理</button>
+                    </li>
+                    <li class="alert-item">
+                        <div>
+                            <strong>待處理訂單</strong>
+                            <div class="text-muted small">12筆訂單等待處理</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary">檢視</button>
+                    </li>
+                    <li class="alert-item">
+                        <div>
+                            <strong>系統更新</strong>
+                            <div class="text-muted small">建議更新到最新版本</div>
+                        </div>
+                        <button class="btn btn-sm btn-outline-secondary">稍後</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 快速操作 -->
+            <div class="page-section mb-4">
+                <div class="page-section-header">
+                    <h5 class="page-section-title">
+                        <i class="bi bi-lightning-fill me-2"></i>
+                        快速操作
+                    </h5>
+                </div>
+                <div class="page-section-body">
+                    <div class="quick-actions">
+                        <button class="btn btn-primary" data-route="products">
+                            <i class="bi bi-plus-circle-fill me-1"></i>
+                            新增商品
+                        </button>
+                        <button class="btn btn-success" data-route="orders">
+                            <i class="bi bi-clipboard-check-fill me-1"></i>
+                            處理訂單
+                        </button>
+                        <button class="btn btn-info" data-route="promotions">
+                            <i class="bi bi-calendar-plus-fill me-1"></i>
+                            建立活動
+                        </button>
+                        <button class="btn btn-warning" data-route="users">
+                            <i class="bi bi-person-plus-fill me-1"></i>
+                            新增用戶
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系統資訊 -->
+            <div class="page-section">
+                <div class="page-section-header">
+                    <h5 class="page-section-title">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        系統資訊
+                    </h5>
+                </div>
+                <div class="page-section-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-flex justify-content-between py-2">
+                            <span>系統版本</span>
+                            <span class="badge bg-primary">v2.0.0</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span>上次備份</span>
+                            <span class="text-muted">2小時前</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span>資料庫狀態</span>
+                            <span class="badge bg-success">正常</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span>儲存使用量</span>
+                            <span class="text-muted">65%</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span>線上用戶</span>
+                            <span class="badge bg-info" id="onlineUsers">248</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 最熱銷商品 -->
+    <div class="page-section mt-4">
+        <div class="page-section-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="page-section-title">
+                    <i class="bi bi-fire me-2"></i>
+                    熱銷商品排行
+                </h5>
+                <a href="#" class="btn btn-sm btn-outline-primary" data-route="products">
+                    管理商品
+                </a>
+            </div>
+        </div>
+        <div class="page-section-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th width="80">排名</th>
+                            <th>商品</th>
+                            <th width="120">銷量</th>
+                            <th width="120">營收</th>
+                            <th width="100">趨勢</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topProductsTable">
+                        <!-- 商品資料將在這裡動態載入 -->
+                        <tr>
+                            <td colspan="5" class="text-center py-4">
+                                <div class="spinner-border spinner-border-sm text-muted me-2"></div>
+                                載入中...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 儀表板專用樣式 -->
+<style>
+    .dashboard-container {
+        padding: 0;
+    }
+
+    .stat-trend {
+        opacity: 0.8;
+    }
+
+    .quick-actions .btn {
+        margin-bottom: 0.5rem;
+        width: 100%;
+        text-align: left;
+    }
+
+    .alert-item:last-child {
+        border-bottom: none;
+    }
+
+    .table th {
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+    }
+
+    /* 響應式調整 */
+    @media (max-width: 991.98px) {
+        .dashboard-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .stat-card {
+            margin-bottom: 1rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .dashboard-stats {
+            grid-template-columns: 1fr;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+        }
+        
+        .page-section-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    }
+</style> 
